@@ -66,9 +66,9 @@ class CreateDesaTables extends Migration
             $table->timestamps();
         });
 
-        DB::statement($this->dropView());
+        // DB::statement($this->dropView());
     
-        DB::statement($this->createView());
+        // DB::statement($this->createView());
     }
 
     /**
@@ -78,7 +78,7 @@ class CreateDesaTables extends Migration
      */
     public function down()
     {
-        DB::statement($this->dropView());
+        // DB::statement($this->dropView());
         Schema::dropIfExists('desas');
         Schema::dropIfExists('kecamatans');
         Schema::dropIfExists('produks');
