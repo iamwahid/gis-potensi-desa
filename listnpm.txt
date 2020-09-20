@@ -1,0 +1,5 @@
+npm i leaflet.awesome-markers
+npm i leaflet@1.5.1
+npm i leaflet-draw@1.0.4
+npm i font-awesome@4.0.0
+npm i ionicons@1.5.2

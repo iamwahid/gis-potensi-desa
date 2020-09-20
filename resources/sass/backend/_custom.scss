@@ -1,0 +1,71 @@
+// Here you can add other styles
+@import '~simple-line-icons/scss/simple-line-icons';
+
+// Fix mobile footer
+.app-footer {
+    flex: 0 0;
+    padding-top: map-get($spacers, 3);
+    padding-bottom: map-get($spacers, 3);
+}
+
+@import '../../../node_modules/font-awesome/css/font-awesome.css';
+@import '../../../node_modules/leaflet/dist/leaflet.css';
+@import '../../../node_modules/leaflet-draw/dist/leaflet.draw.css';
+@import '../../../node_modules/leaflet.awesome-markers/dist/leaflet.awesome-markers.css';
+
+.leaflet-side-info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.leaflet-side-info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.leaflet-c-popup .leaflet-popup-content {
+    width: auto !important;
+    margin: 10px 10px 8px;
+    line-height: 1.1 !important;
+    min-width: 400px;
+} 
+
+.marker-pin {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  background: red;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 50%;
+  margin: -15px 0 0 -15px;
+}
+
+// .marker-pin::after {
+//     content: '';
+//     width: 24px;
+//     height: 24px;
+//     margin: 3px 0 0 3px;
+//     background: #fff;
+//     position: absolute;
+//     border-radius: 50%;
+//  }
+
+.custom-div-icon .svg-inline--fa {
+   position: absolute;
+   width: 22px;
+   font-size: 22px;
+   left: 0;
+   right: 0;
+   margin: 10px auto;
+   text-align: center;
+}
+
+.custom-div-icon .svg-inline--fa.awesome {
+   margin: 12px auto;
+   font-size: 17px;
+}
