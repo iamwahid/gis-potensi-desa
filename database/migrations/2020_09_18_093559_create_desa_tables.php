@@ -114,6 +114,6 @@ class CreateDesaTables extends Migration
         RIGHT JOIN `produks` ON `desas`.`id` = `produks`.`desa_id`
         RIGHT JOIN `wisatas` ON `desas`.`id` = `wisatas`.`desa_id`
         ORDER BY `desa_id`;
-        SQL;
+SQL;
     }
 }
