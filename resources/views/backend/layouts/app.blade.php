@@ -57,7 +57,8 @@
     {!! script(mix('js/vendor.js')) !!}
     {!! script(mix('js/backend.js')) !!}
     <script>
-        var available_marker = JSON.parse('{!!json_encode(config("gisdesa.value.desa.marker.available"))!!}')
+        var available_marker = JSON.parse('{!!json_encode(config("gisdesa.value.desa.marker.available"))!!}');
+        var baseUrl = "{{ url('/') }}";
     </script>
     <script src="{{asset('js/vendor/leaflet.js')}}"></script>
     {{-- <script src="https://kit.fontawesome.com/4da986243c.js" crossorigin="anonymous"></script> --}}

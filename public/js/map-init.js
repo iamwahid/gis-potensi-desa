@@ -13,8 +13,6 @@ var map = new L.Map('mapid', {
     maxBounds: bounds,
     maxBoundsViscosity: 1.0
 });
-
-var baseUrl = "{{ url('/') }}";
 var geojson;
 
 var greenIcon = new L.Icon({
