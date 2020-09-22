@@ -6,7 +6,7 @@
       <div class="row">
           <div class="col-sm-5">
               <h4 class="card-title mb-0">
-                  Produk Desa <small>Edit</small>
+                  Potensi Desa <small>Edit</small>
               </h4>
             
           </div><!--col-->
@@ -19,23 +19,36 @@
     </div>
     <hr>
 
-    {{ html()->modelForm($produk, 'POST', route('admin.desa.produk.update', $produk))->open() }}
+    {{ html()->modelForm($potency, 'POST', route('admin.desa.potency.update', $potency))->open() }}
     <div class="row mt-3">
         <div class="col">
-            <label for="nama">Nama Produk</label>
+            <label for="nama">Nama Potensi Desa</label>
             {{ html()->text('nama')->class('form-control')->required() }}
         </div>
     </div>
     <div class="row mt-2">
         <div class="col">
-              <label for="product_by">Produk Oleh</label>
-              {{ html()->select('product_by')
-              ->options(config('gisdesa.value.desa.produk.by'))->class('form-control')->required() }}
+              <label for="managed_by">Dikelola/Diproduksi Oleh</label>
+              {{ html()->select('managed_by')
+              ->options(config('gisdesa.value.desa.potency.managed_by'))->class('form-control')->required() }}
         </div>
         <div class="col">
-              <label for="product_type">Jenis Produk</label>
-              {{ html()->select('product_type')
-              ->options(config('gisdesa.value.desa.produk.type'))->class('form-control')->required() }}
+              <label for="potency_type">Jenis Potensi</label>
+              {{ html()->select('potency_type')
+              ->options(config('gisdesa.value.desa.potency.potency_type'))->class('form-control')->required() }}
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+              <label for="potency_category">Kategori Potensi</label>
+              {{ html()->select('potency_category')
+              ->options(config('gisdesa.value.desa.potency.potency_category'))->class('form-control')->required() }}
+        </div>
+        <div class="col">
+              <label for="potency_source">Sumber/Hasil Potensi dari</label>
+              {{ html()->select('potency_source')
+              ->options(config('gisdesa.value.desa.potency.potency_source'))->class('form-control')->required() }}
         </div>
     </div>
 
@@ -82,7 +95,7 @@
     // L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
 
 	// base map
-	axios.get('{{ route("api.map.desa.id", $produk->desa->id) }}')
+	axios.get('{{ route("api.map.desa.id", $potency->desa->id) }}')
 	.then(function (response) {
 		geojson = L.geoJSON(response.data, {
 			style: function(geoJsonPoint) {
@@ -103,7 +116,7 @@
     });
     
 
-	axios.get('{{ route("api.map.produk.id", $produk->id) }}')
+	axios.get('{{ route("api.map.potency.id", $potency->id) }}')
 	.then(function (response) {
 		L.geoJSON(response.data, {
 			pointToLayer: function(geoJsonPoint, latlng) {
@@ -155,9 +168,9 @@
         marker
         .setLatLng([lat, lng])
         .bindPopup(function(layer) {
-            let nama_ = 'Nama Produk : ' + $('#nama').val()
-            let prdby_ = 'Produk Oleh : ' + $('#product_by').val()
-            let prdty_ = 'Jenis Produk : ' + $('#product_type').val()
+            let nama_ = 'Nama Potency : ' + $('#nama').val()
+            let prdby_ = 'Potency Oleh : ' + $('#product_by').val()
+            let prdty_ = 'Jenis Potency : ' + $('#product_type').val()
             let koor_ = "Koordinat :  " + marker.getLatLng().toString()
             return `<strong>Lokasi Baru</strong><br>${nama_}<br>${prdby_}<br>${prdty_}<br>${koor_}`
         },

@@ -49,44 +49,23 @@ Breadcrumbs::for('admin.kecamatan.edit', function ($trail, $kecamatan) {
     $trail->push('Edit', route('admin.kecamatan.edit', $kecamatan));
 });
 
-// Produk
-Breadcrumbs::for('admin.desa.produk.index', function ($trail, $desa) {
+// Potency
+Breadcrumbs::for('admin.desa.potency.index', function ($trail, $desa) {
     $trail->parent('admin.dashboard');
-    $trail->push('Produk', route('admin.desa.produk.index', $desa));
+    $trail->push('Potency', route('admin.desa.potency.index', $desa));
 });
 
-Breadcrumbs::for('admin.desa.produk.create', function ($trail, $desa) {
-    $trail->parent('admin.desa.produk.index', $desa);
-    $trail->push('Tambah', route('admin.desa.produk.create', $desa));
+Breadcrumbs::for('admin.desa.potency.create', function ($trail, $desa) {
+    $trail->parent('admin.desa.potency.index', $desa);
+    $trail->push('Tambah', route('admin.desa.potency.create', $desa));
 });
 
-Breadcrumbs::for('admin.desa.produk.show', function ($trail, $produk) {
-    $trail->parent('admin.desa.produk.index', $produk->desa->id);
-    $trail->push('Tambah', route('admin.desa.produk.show', $produk));
+Breadcrumbs::for('admin.desa.potency.show', function ($trail, $potency) {
+    $trail->parent('admin.desa.potency.index', $potency->desa->id);
+    $trail->push('Tambah', route('admin.desa.potency.show', $potency));
 });
 
-Breadcrumbs::for('admin.desa.produk.edit', function ($trail, $produk) {
-    $trail->parent('admin.desa.produk.index', $produk->desa->id);
-    $trail->push('Edit', route('admin.desa.produk.edit', $produk));
-});
-
-// Wisata
-Breadcrumbs::for('admin.wisata.index', function ($trail) {
-    $trail->parent('admin.dashboard');
-    $trail->push('Wisata', route('admin.wisata.index'));
-});
-
-Breadcrumbs::for('admin.wisata.create', function ($trail) {
-    $trail->parent('admin.wisata.index');
-    $trail->push('Tambah', route('admin.wisata.create'));
-});
-
-Breadcrumbs::for('admin.wisata.show', function ($trail, $wisata) {
-    $trail->parent('admin.wisata.index');
-    $trail->push('Tambah', route('admin.wisata.show', $wisata));
-});
-
-Breadcrumbs::for('admin.wisata.edit', function ($trail, $wisata) {
-    $trail->parent('admin.wisata.index');
-    $trail->push('Edit', route('admin.wisata.edit', $wisata));
+Breadcrumbs::for('admin.desa.potency.edit', function ($trail, $potency) {
+    $trail->parent('admin.desa.potency.index', $potency->desa->id);
+    $trail->push('Edit', route('admin.desa.potency.edit', $potency));
 });

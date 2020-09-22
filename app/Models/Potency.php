@@ -4,14 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Produk extends Model
+class Potency extends Model
 {
     protected $fillable = [
         'nama',
         'deskripsi',
         'desa_id',
-        'product_by',
-        'product_type',
+        'managed_by', // pengelola | perorangan | kelompok
+        'potency_type', // potency, wisata
+        'potency_category', // pemandangan, telaga, | kerajinan, makanan, minuman
+        'potency_source', // alam, buatan
+        'is_draft', // masih konsep
         'map_lat',
         'map_long',
         'map_bound_coordinates',
@@ -31,32 +34,32 @@ class Produk extends Model
     public function getMapcontentAttribute()
     {
         $props = [
-            'Nama Produk : '. $this->nama,
-            'Deskripsi Produk : '.$this->deskripsi,
+            'Nama Potensi : '. $this->nama,
+            'Deskripsi Potensi : '.$this->deskripsi,
             'Koordinat : '.$this->map_lat.', '.$this->map_long,
         ];
         $links = [
-            route('admin.desa.produk.show', $this->id) => 'Lihat Detail',
+            route('admin.desa.potency.show', $this->id) => 'Lihat Detail',
         ];
         $content = view('components.map.popup', compact(['props', 'links']))->render();
         return $content;
     }
 
-    public function getProductByAttribute()
+    public function getManagedByAttribute()
     {
-        if ($this->attributes['product_by']) return config('gisdesa.value.desa.produk.by')[$this->attributes['product_by']];
+        if ($this->attributes['managed_by']) return config('gisdesa.value.desa.potency.managed_by')[$this->attributes['managed_by']];
     }
 
-    public function getProductTypeAttribute()
+    public function getPotencyTypeAttribute()
     {
-        if ($this->attributes['product_type']) return config('gisdesa.value.desa.produk.type')[$this->attributes['product_type']];
+        if ($this->attributes['potency_type']) return config('gisdesa.value.desa.potency.potency_type')[$this->attributes['potency_type']];
     }
 
     public function getActionButtonsAttribute()
     {
-        $show = route('admin.desa.produk.show', $this->id);
-        $edit = route('admin.desa.produk.edit', $this->id);
-        $delete = route('admin.desa.produk.destroy', $this->id);
+        $show = route('admin.desa.potency.show', $this->id);
+        $edit = route('admin.desa.potency.edit', $this->id);
+        $delete = route('admin.desa.potency.destroy', $this->id);
         $html = 
 <<<HTML
         <div class="btn-group">

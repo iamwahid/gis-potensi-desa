@@ -3,29 +3,29 @@
 return [
   'value' => [
     'desa' => [
-      'produk' => [
-        'by' => [
+      'potency' => [
+        'managed_by' => [
           'pengrajin' => 'Pengrajin',
           'industri_rumah' => 'Industri Rumahan',
           'koperasi' => 'Koperasi',
           'kelompok_usaha' => 'Kelompok Usaha',
           'perorangan' => 'Perorangan',
+          'dinas' => 'Dinas'
         ],
-        'type' => [
+        'potency_type' => [
+          'produk' => 'Produk',
+          'wisata' => 'Wisata'
+        ],
+        'potency_category' => [
+          'pemandangan' => 'Pemandangan Alam',
+          'buper' => 'Bumi Perkemahan',
+          'telaga' => 'Telaga',
+          'danau' => 'Danau',
+          'makanan' => 'Makanan'
+        ],
+        'potency_source' => [
           'alam' => 'Hasil Alam',
-          'buatan' => 'Buatan'
-        ]
-      ],
-      'wisata' => [
-        'by' => [
-          'pengrajin' => 'Pengrajin',
-          'industri_rumah' => 'Industri Rumahan',
-          'koperasi' => 'Koperasi',
-          'kelompok_usaha' => 'Kelompok Usaha',
-          'perorangan' => 'Perorangan',
-        ],
-        'type' => [
-          'alam' => 'Hasil Bumi',
+          'pertanian' => 'Hasil Pertanian',
           'buatan' => 'Buatan'
         ]
       ],

@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Backend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Desa;
-use App\Models\Produk;
-use App\Repositories\Backend\Auth\ProdukRepository;
+use App\Models\Potency;
+use App\Repositories\Backend\Auth\PotencyRepository;
 
-class ProdukController extends Controller
+class PotencyController extends Controller
 {
-    protected $produks;
+    protected $potencies;
 
-    public function __construct(ProdukRepository $produks)
+    public function __construct(PotencyRepository $potencies)
     {
-        $this->produks = $produks;
+        $this->potencies = $potencies;
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class ProdukController extends Controller
      */
     public function index(Desa $desa)
     {
-        return view('backend.produk.index', ['produks' => $this->produks->get()]);
+        return view('backend.potency.index', ['potencies' => $this->potencies->get()]);
     }
 
     /**
@@ -33,7 +33,7 @@ class ProdukController extends Controller
      */
     public function create(Desa $desa)
     {
-        return view('backend.produk.create');
+        return view('backend.potency.create');
     }
 
     /**
@@ -48,8 +48,8 @@ class ProdukController extends Controller
             
         ]);
 
-        $this->produks->create($data);
-        return redirect()->route('admin.produk.index')->withFlashSuccess('success');
+        $this->potencies->create($data);
+        return redirect()->route('admin.potency.index')->withFlashSuccess('success');
     }
 
     /**
@@ -58,47 +58,47 @@ class ProdukController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Desa $desa, Produk $produk)
+    public function show(Desa $desa, Potency $potency)
     {
-        return view('backend.produk.show', ['produk' => $produk]);
+        return view('backend.potency.show', ['potency' => $potency]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $produk
+     * @param  int  $potency
      * @return \Illuminate\Http\Response
      */
-    public function edit(Desa $desa, Produk $produk)
+    public function edit(Desa $desa, Potency $potency)
     {
-        return view('backend.produk.edit', ['produk' => $produk]);
+        return view('backend.potency.edit', ['potency' => $potency]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $produk
+     * @param  int  $potency
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Desa $desa, Produk $produk)
+    public function update(Request $request, Desa $desa, Potency $potency)
     {
         $data = $request->validate([
             
         ]);
 
-        $this->produks->updateById($produk->id, $data);
-        return redirect()->route('admin.produk.index')->withFlashSuccess('success');
+        $this->potencies->updateById($potency->id, $data);
+        return redirect()->route('admin.potency.index')->withFlashSuccess('success');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $produk
+     * @param  int  $potency
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Desa $desa, Produk $produk)
+    public function destroy(Desa $desa, Potency $potency)
     {
-        $this->produks->deleteById($produk->id);
+        $this->potencies->deleteById($potency->id);
     }
 }

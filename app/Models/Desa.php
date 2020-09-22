@@ -24,28 +24,28 @@ class Desa extends Model
         return $this->belongsTo(Kecamatan::class, 'kec_id');
     }
 
-    public function produks()
+    public function potencies()
     {
-        return $this->hasMany(Produk::class, 'desa_id');
+        return $this->hasMany(Potency::class, 'desa_id');
     }
 
-    public function wisatas()
-    {
-        return $this->hasMany(Wisata::class, 'desa_id');
-    }
+    // public function wisatas()
+    // {
+    //     return $this->hasMany(Wisata::class, 'desa_id');
+    // }
 
     public function getActionButtonsAttribute()
     {
         $show = route('admin.desa.show', $this->id);
         $edit = route('admin.desa.edit', $this->id);
         $delete = route('admin.desa.destroy', $this->id);
-        $produk = route('admin.desa.produk.index', $this->id);
+        $potency = route('admin.desa.potency.index', $this->id);
         $html = 
 <<<HTML
         <div class="btn-group">
         <a href="$show" class="btn btn-success">Lihat</a>
         <a href="$edit" class="btn btn-primary">Edit</a>
-        <a href="$produk" class="btn btn-primary">Produk</a>
+        <a href="$potency" class="btn btn-primary">Potensi Desa</a>
         <a href="$delete" class="btn btn-danger delete-item disabled">Hapus</a>
         </div>
 HTML;

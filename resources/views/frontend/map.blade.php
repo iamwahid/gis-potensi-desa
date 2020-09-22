@@ -38,6 +38,7 @@
 	// L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
 
 	var zoomto = 'kec';
+	var map_p_markers;
 	var info = L.control();
 
 	info.onAdd = function (map) {
@@ -83,6 +84,7 @@
 		console.log(e)
 		if (zoomto == 'kec') {
 			map.removeLayer(geojson)
+			map.removeLayer(map_p_markers)
 			axios.get(baseUrl+'/api/map/kec/'+e.target.feature.properties.kec_id)
 			.then(function (response) {
 				geojson = L.geoJSON(response.data, {
@@ -148,9 +150,9 @@
 		console.log(error);
 	});
 
-	axios.get('{{ route("api.map.produk") }}')
+	axios.get('{{ route("api.map.potency") }}')
 	.then(function (response) {
-		L.geoJSON(response.data, {
+		map_p_markers = L.geoJSON(response.data, {
 			pointToLayer: function(geoJsonPoint, latlng) {
 					return L.marker(latlng, {icon: markers[geoJsonPoint.properties.marker_color]});
 				}
@@ -172,29 +174,6 @@
 		console.log(error);
 	});
 
-	axios.get('{{ route("api.map.wisata") }}')
-	.then(function (response) {
-		L.geoJSON(response.data, {
-			pointToLayer: function(geoJsonPoint, latlng) {
-					return L.marker(latlng, {icon: markers[geoJsonPoint.properties.marker_color]});
-				}
-		})
-		.bindPopup(function(layer){
-			return layer.feature.properties.map_content;
-		}, 
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			opacity: 0.75,
-			className: 'leaflet-c-popup'
-		})
-		.addTo(map);
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
 
 </script>
 @endpush

@@ -2,23 +2,23 @@
 
 namespace App\Repositories\Backend\Auth;
 
-use App\Models\Wisata;
+use App\Models\Potency;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Http\Resources\MapResource;
 use App\Repositories\BaseRepository;
 
 /**
- * Class WisataRepository.
+ * Class PotencyRepository.
  */
-class WisataRepository extends BaseRepository
+class PotencyRepository extends BaseRepository
 {
     /**
      * @return string
      */
     public function model()
     {
-        return Wisata::class;
+        return Potency::class;
     }
 
     // public function createFromGeoJSONFeature(array $feature)
@@ -30,17 +30,17 @@ class WisataRepository extends BaseRepository
     //     ];
     // }
 
-    public function getMapWisata()
+    public function getMapPotency()
     {
-        $features = $this->get()->map(function($wisata) {
+        $features = $this->get()->map(function($potency) {
             return [
                 'type'       => 'Feature',
-                'properties' => new MapResource($wisata),
+                'properties' => new MapResource($potency),
                 'geometry'   => [
                     'type'        => 'Point',
                     'coordinates' => [
-                        $wisata->map_long,
-                        $wisata->map_lat,
+                        $potency->map_long,
+                        $potency->map_lat,
                     ],
                 ],
             ];
@@ -54,18 +54,18 @@ class WisataRepository extends BaseRepository
 
     public function getMapById($id)
     {
-        $wisata = $this->getById($id);
-        return $wisata ? json_encode([
+        $potency = $this->getById($id);
+        return $potency ? json_encode([
             'type' =>  'FeatureCollection',
             'features' => [
                 [
                     'type'       => 'Feature',
-                    'properties' => new MapResource($wisata),
+                    'properties' => new MapResource($potency),
                     'geometry'   => [
                         'type'        => 'Point',
                         'coordinates' => [
-                            $wisata->map_long,
-                            $wisata->map_lat,
+                            $potency->map_long,
+                            $potency->map_lat,
                         ],
                     ],
                 ]
@@ -75,15 +75,15 @@ class WisataRepository extends BaseRepository
 
     public function getMapByDesaId($id)
     {
-        $features = $this->where('desa_id', $id)->get()->map(function($wisata) {
+        $features = $this->where('desa_id', $id)->get()->map(function($potency) {
             return [
                 'type'       => 'Feature',
-                'properties' => new MapResource($wisata),
+                'properties' => new MapResource($potency),
                 'geometry'   => [
                     'type'        => 'Point',
                     'coordinates' => [
-                        $wisata->map_long,
-                        $wisata->map_lat,
+                        $potency->map_long,
+                        $potency->map_lat,
                     ],
                 ],
             ];

@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\Auth\DesaRepository;
-use App\Repositories\Backend\Auth\ProdukRepository;
-use App\Repositories\Backend\Auth\WisataRepository;
+use App\Repositories\Backend\Auth\PotencyRepository;
 
 /**
  * Class MapController.
@@ -14,14 +13,12 @@ class MapController extends Controller
 {
 
     protected $desas;
-    protected $produks;
-    protected $wisatas;
+    protected $potencies;
 
-    public function __construct(DesaRepository $desas, ProdukRepository $produks, WisataRepository $wisatas)
+    public function __construct(DesaRepository $desas, PotencyRepository $potencies)
     {
         $this->desas = $desas;
-        $this->produks = $produks;
-        $this->wisatas = $wisatas;
+        $this->potencies = $potencies;
     }
 
     public function mapDesa()
@@ -39,33 +36,18 @@ class MapController extends Controller
         return $this->desas->getMapByKecId($id);
     }
 
-    public function mapProduk()
+    public function mapPotency()
     {
-        return $this->produks->getMapProduk();
+        return $this->potencies->getMapPotency();
     }
 
-    public function mapProdukById($id)
+    public function mapPotencyById($id)
     {
-        return $this->produks->getMapById($id);
+        return $this->potencies->getMapById($id);
     }
 
-    public function mapProdukByDesaId($id)
+    public function mapPotencyByDesaId($id)
     {
-        return $this->produks->getMapByDesaId($id);
-    }
-
-    public function mapWisata()
-    {
-        return $this->wisatas->getMapWisata();
-    }
-
-    public function mapWisataById($id)
-    {
-        return $this->wisatas->getMapById($id);
-    }
-
-    public function mapWisataByDesaId($id)
-    {
-        return $this->wisatas->getMapByDesaId($id);
+        return $this->potencies->getMapByDesaId($id);
     }
 }

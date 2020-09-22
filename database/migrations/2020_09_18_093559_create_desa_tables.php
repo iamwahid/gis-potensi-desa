@@ -36,28 +36,16 @@ class CreateDesaTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create('produks', function (Blueprint $table) {
+        Schema::create('potencies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nama');
             $table->text('deskripsi');
             $table->bigInteger('desa_id');
-            $table->string('product_by')->nullable();
-            $table->string('product_type');
-            $table->string('map_lat')->nullable();
-            $table->string('map_long')->nullable();
-            $table->text('map_bound_coordinates')->nullable();
-            $table->string('marker_type')->nullable();
-            $table->string('marker_color')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('wisatas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('nama');
-            $table->text('deskripsi');
-            $table->bigInteger('desa_id');
-            $table->string('manage_by')->nullable();
-            $table->string('wisata_type');
+            $table->string('managed_by')->nullable();
+            $table->string('potency_type')->nullable();
+            $table->string('potency_category')->nullable();
+            $table->string('potency_source')->nullable();
+            $table->boolean('is_draft')->default(true);
             $table->string('map_lat')->nullable();
             $table->string('map_long')->nullable();
             $table->text('map_bound_coordinates')->nullable();
@@ -81,8 +69,7 @@ class CreateDesaTables extends Migration
         // DB::statement($this->dropView());
         Schema::dropIfExists('desas');
         Schema::dropIfExists('kecamatans');
-        Schema::dropIfExists('produks');
-        Schema::dropIfExists('wisatas');
+        Schema::dropIfExists('potencies');
     }
 
     public function dropView(): string
@@ -107,11 +94,11 @@ class CreateDesaTables extends Migration
 
         CREATE VIEW `data_potensi_desa` AS
         SELECT `desas`.`id` as `desa_id`, `desas`.`nama` as `desa`, `kecamatans`.`nama` as `kecamatan`, `kecamatans`.`kabupaten` as `kabupaten`, `kecamatans`.`provinsi` as `provinsi`, 
-        `produks`.`nama` as `desa_produk`, `produks`.`map_lat` as `produk_map_lat`, `produks`.`map_long` as `produk_map_long`,
+        `potencies`.`nama` as `desa_potency`, `potencies`.`map_lat` as `potency_map_lat`, `potencies`.`map_long` as `potency_map_long`,
         `wisatas`.`nama` as `desa_wisata`, `wisatas`.`map_lat` as `wisata_map_lat`, `wisatas`.`map_long` as `wisata_map_long`
         FROM `desas` 
         JOIN `kecamatans` ON `kecamatans`.`id` = `desas`.`kec_id`
-        RIGHT JOIN `produks` ON `desas`.`id` = `produks`.`desa_id`
+        RIGHT JOIN `potencies` ON `desas`.`id` = `potencies`.`desa_id`
         RIGHT JOIN `wisatas` ON `desas`.`id` = `wisatas`.`desa_id`
         ORDER BY `desa_id`;
 SQL;

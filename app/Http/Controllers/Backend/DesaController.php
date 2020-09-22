@@ -5,26 +5,23 @@ namespace App\Http\Controllers\Backend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Desa;
-use App\Models\Produk;
+use App\Models\Potency;
 use App\Models\Wisata;
 use App\Repositories\Backend\Auth\DesaRepository;
 use App\Repositories\Backend\Auth\KecamatanRepository;
-use App\Repositories\Backend\Auth\ProdukRepository;
-use App\Repositories\Backend\Auth\WisataRepository;
+use App\Repositories\Backend\Auth\PotencyRepository;
 
 class DesaController extends Controller
 {
     protected $desas;
     protected $kecamatans;
-    protected $produks;
-    protected $wisatas;
+    protected $potencies;
 
-    public function __construct(DesaRepository $desas, KecamatanRepository $kecamatans, ProdukRepository $produks, WisataRepository $wisatas)
+    public function __construct(DesaRepository $desas, KecamatanRepository $kecamatans, PotencyRepository $potencies)
     {
         $this->desas = $desas;
         $this->kecamatans = $kecamatans;
-        $this->produks = $produks;
-        $this->wisatas = $wisatas;
+        $this->potencies = $potencies;
     }
     /**
      * Display a listing of the resource.
@@ -118,29 +115,32 @@ class DesaController extends Controller
     }
 
     /**
-     * Produk
+     * Potency
      */
-    public function produkDesaAll(Desa $desa)
+    public function potencyDesaAll(Desa $desa)
     {
-        $produks = $desa->produks;
-        return view('backend.desa.produk.index', compact(['produks', 'desa']));
+        $potencies = $desa->potencies;
+        return view('backend.desa.potency.index', compact(['potencies', 'desa']));
     }
 
-    public function produkDesaCreate(Desa $desa)
+    public function potencyDesaCreate(Desa $desa)
     {
         $markers = collect(config('gisdesa.value.desa.marker.available'))->mapWithKeys(function($d, $i){
             return [$i => ucfirst($i)];
         })->toArray();
-        return view('backend.desa.produk.create', compact(['desa', 'markers']));
+        return view('backend.desa.potency.create', compact(['desa', 'markers']));
     }
 
-    public function produkDesaStore(Request $request, Desa $desa)
+    public function potencyDesaStore(Request $request, Desa $desa)
     {
         $data = $request->validate([
             'nama'  => ['required'],
             'deskripsi' => ['required'],
-            'product_by' => ['required'],
-            'product_type' => ['required'],
+            'managed_by' => ['nullable'],
+            'potency_type' => ['nullable'],
+            'potency_category' => ['nullable'],
+            'potency_source' => ['nullable'],
+            'is_draft' => ['nullable'],
             'map_lat' => ['required'],
             'map_long' => ['required'],
             'map_bound_coordinates' => ['nullable'],
@@ -148,16 +148,16 @@ class DesaController extends Controller
             'marker_color' => ['nullable']
         ]);
         // dd($data);
-        $desa->produks()->create($data);
-        return redirect()->route('admin.desa.produk.index', $desa)->withFlashSuccess('success');
+        $desa->potencies()->create($data);
+        return redirect()->route('admin.desa.potency.index', $desa)->withFlashSuccess('success');
     }
 
-    public function produkDesaShow(Produk $produk)
+    public function potencyDesaShow(Potency $potency)
     {
-        return view('backend.desa.produk.show', compact(['produk']));
+        return view('backend.desa.potency.show', compact(['potency']));
     }
 
-    public function produkDesaEdit(Request $request, Produk $produk)
+    public function potencyDesaEdit(Request $request, Potency $potency)
     {
         $markers = collect(config('gisdesa.value.desa.marker.available'))->mapWithKeys(function($d, $i){
             return [$i => ucfirst($i)];
@@ -166,92 +166,28 @@ class DesaController extends Controller
             $data = $request->validate([
                 'nama'  => ['required'],
                 'deskripsi' => ['required'],
-                'product_by' => ['required'],
-                'product_type' => ['required'],
+                'managed_by' => ['nullable'],
+                'potency_type' => ['nullable'],
+                'potency_category' => ['nullable'],
+                'potency_source' => ['nullable'],
+                'is_draft' => ['nullable'],
                 'map_lat' => ['required'],
                 'map_long' => ['required'],
                 'map_bound_coordinates' => ['nullable'],
                 'marker_type' => ['nullable'],
                 'marker_color' => ['nullable']
             ]);
-            $produk->update($data);
-            return redirect()->route('admin.desa.produk.index', $produk->desa)->withFlashSuccess('success');
+
+            // dd($data);
+            $potency->update($data);
+            return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashSuccess('success');
         }
 
-        return view('backend.desa.produk.edit', compact(['produk', 'markers']));
+        return view('backend.desa.potency.edit', compact(['potency', 'markers']));
     }
 
-    public function produkDesaDestroy(Produk $produk)
+    public function potencyDesaDestroy(Potency $potency)
     {
-        $this->produks->deleteById($produk->id);
-    }
-
-    /**
-     * Wisata
-     */
-    public function wisataDesaAll(Desa $desa)
-    {
-        $wisatas = $desa->wisatas;
-        return view('backend.desa.wisata.index', compact(['wisatas', 'desa']));
-    }
-
-    public function wisataDesaCreate(Desa $desa)
-    {
-        $markers = collect(config('gisdesa.value.desa.marker.available'))->mapWithKeys(function($d, $i){
-            return [$i => ucfirst($i)];
-        })->toArray();
-        return view('backend.desa.wisata.create', compact(['desa', 'markers']));
-    }
-
-    public function wisataDesaStore(Request $request, Desa $desa)
-    {
-        $data = $request->validate([
-            'nama'  => ['required'],
-            'deskripsi' => ['required'],
-            'manage_by' => ['required'],
-            'wisata_type' => ['required'],
-            'map_lat' => ['required'],
-            'map_long' => ['required'],
-            'map_bound_coordinates' => ['nullable'],
-            'marker_type' => ['nullable'],
-            'marker_color' => ['nullable']
-        ]);
-        // dd($data);
-        $desa->wisatas()->create($data);
-        return redirect()->route('admin.desa.wisata.index', $desa)->withFlashSuccess('success');
-    }
-
-    public function wisataDesaShow(Wisata $wisata)
-    {
-        return view('backend.desa.wisata.show', compact(['wisata']));
-    }
-
-    public function wisataDesaEdit(Request $request, Wisata $wisata)
-    {
-        $markers = collect(config('gisdesa.value.desa.marker.available'))->mapWithKeys(function($d, $i){
-            return [$i => ucfirst($i)];
-        })->toArray();
-        if (strtolower($request->method()) == 'post') {
-            $data = $request->validate([
-                'nama'  => ['required'],
-                'deskripsi' => ['required'],
-                'manage_by' => ['required'],
-                'wisata_type' => ['required'],
-                'map_lat' => ['required'],
-                'map_long' => ['required'],
-                'map_bound_coordinates' => ['nullable'],
-                'marker_type' => ['nullable'],
-                'marker_color' => ['nullable']
-            ]);
-            $wisata->update($data);
-            return redirect()->route('admin.desa.wisata.index', $wisata->desa)->withFlashSuccess('success');
-        }
-
-        return view('backend.desa.wisata.edit', compact(['wisata', 'markers']));
-    }
-
-    public function wisataDesaDestroy(Wisata $wisata)
-    {
-        $this->wisatas->deleteById($wisata->id);
+        $this->potencies->deleteById($potency->id);
     }
 }

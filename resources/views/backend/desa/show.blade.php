@@ -13,7 +13,7 @@
 
 					<div class="col-sm-7 pull-right">
             <div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
-                <a href="{{ route('admin.desa.produk.index', $desa) }}" class="btn btn-success ml-1" data-toggle="tooltip" title="Produk Desa">Lihat Produk</a>
+                <a href="{{ route('admin.desa.potency.index', $desa) }}" class="btn btn-success ml-1" data-toggle="tooltip" title="Potensi Desa">Lihat Potensi</a>
             </div><!--btn-toolbar-->            
           </div><!--col-->
       </div><!--row-->
@@ -68,31 +68,7 @@
     });
     
 
-	axios.get('{{ route("api.map.desa.produk", $desa->id) }}')
-	.then(function (response) {
-		L.geoJSON(response.data, {
-			pointToLayer: function(geoJsonPoint, latlng) {
-						return L.marker(latlng, {icon: markers[geoJsonPoint.properties.marker_color]});
-				}
-		})
-		.bindPopup(function(layer){
-			return layer.feature.properties.map_content;
-		}, 
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			opacity: 0.75,
-			className: 'leaflet-c-popup'
-		})
-		.addTo(map);
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
-
-	axios.get('{{ route("api.map.desa.wisata", $desa->id) }}')
+	axios.get('{{ route("api.map.desa.potency", $desa->id) }}')
 	.then(function (response) {
 		L.geoJSON(response.data, {
 			pointToLayer: function(geoJsonPoint, latlng) {

@@ -22,10 +22,8 @@ Route::group(['prefix' => 'map', 'as' => 'api.map.'], function () {
     Route::get('/desa', [MapController::class, 'mapDesa'])->name('desa');
     Route::get('/desa/{id}', [MapController::class, 'mapDesaById'])->name('desa.id');
     Route::get('/kec/{id}', [MapController::class, 'mapDesaByKecId'])->name('kec.id');
-    Route::get('/desa/{id}/produk', [MapController::class, 'mapProdukByDesaId'])->name('desa.produk');
+    Route::get('/desa/{id}/potency', [MapController::class, 'mapPotencyByDesaId'])->name('desa.potency');
     Route::get('/desa/{id}/wisata', [MapController::class, 'mapWisataByDesaId'])->name('desa.wisata');
-    Route::get('/produk', [MapController::class, 'mapProduk'])->name('produk');
-    Route::get('/produk/{id}', [MapController::class, 'mapProdukById'])->name('produk.id');
-    Route::get('/wisata', [MapController::class, 'mapWisata'])->name('wisata');
-    Route::get('/wisata/{id}', [MapController::class, 'mapWisataById'])->name('wisata.id');
+    Route::get('/potency', [MapController::class, 'mapPotency'])->name('potency');
+    Route::get('/potency/{id}', [MapController::class, 'mapPotencyById'])->name('potency.id');
 });

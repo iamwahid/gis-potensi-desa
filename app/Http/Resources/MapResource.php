@@ -3,8 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Desa;
-use App\Models\Produk;
-use App\Models\Wisata;
+use App\Models\Potency;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MapResource extends JsonResource
@@ -15,8 +14,7 @@ class MapResource extends JsonResource
         $this->resource = $resource;
 
         if ($resource instanceof Desa) $this->type = 'desa';
-        else if ($resource instanceof Produk) $this->type = 'produk';
-        else if ($resource instanceof Wisata) $this->type = 'wisata';
+        else if ($resource instanceof Potency) $this->type = 'potensi';
         else $this->type = '';
     }
 
@@ -43,31 +41,18 @@ class MapResource extends JsonResource
                     'map_content' => $this->mapcontent
                 ];
                 break;
-            case 'produk':
+            case 'potensi':
                 $res = [
-                    'produk_id' => $this->id,
+                    'potensi_id' => $this->id,
                     'desa_id' => $this->desa->id,
                     'kec_id' => $this->desa->kec_id,
-                    'nama_produk' => $this->nama,
-                    'deskripsi_produk' => $this->deskripsi,
-                    'desa' => $this->desa->nama,
-                    'kecamatan' => $this->desa->kecamatan->nama,
-                    'kabupaten' => $this->desa->kecamatan->kabupaten,
-                    'provinsi' => $this->desa->kecamatan->provinsi,
-                    'map_lat' => $this->map_lat,
-                    'map_long' => $this->map_long,
-                    'map_content' => $this->mapcontent,
-                    'marker_color' => $this->marker_color,
-                    'marker_type' => $this->marker_type,
-                ];
-                break;
-            case 'wisata':
-                $res = [
-                    'wisata_id' => $this->id,
-                    'desa_id' => $this->desa->id,
-                    'kec_id' => $this->desa->kec_id,
-                    'nama_wisata' => $this->nama,
-                    'deskripsi_wisata' => $this->deskripsi,
+                    'nama_potensi' => $this->nama,
+                    'deskripsi_potensi' => $this->deskripsi,
+                    'managed_by' => $this->managed_by,
+                    'potency_type' => $this->potency_type,
+                    'potency_category' => $this->potency_category,
+                    'potency_source' => $this->potency_source,
+                    'is_draft' => $this->is_draft,
                     'desa' => $this->desa->nama,
                     'kecamatan' => $this->desa->kecamatan->nama,
                     'kabupaten' => $this->desa->kecamatan->kabupaten,

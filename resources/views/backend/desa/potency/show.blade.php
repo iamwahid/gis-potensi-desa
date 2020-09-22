@@ -6,7 +6,7 @@
       <div class="row">
           <div class="col-sm-5">
               <h4 class="card-title mb-0">
-                  Produk Desa <small>Lihat</small>
+                  Potensi Desa <small>Lihat</small>
               </h4>
             
           </div><!--col-->
@@ -14,9 +14,9 @@
 
       <div class="row mt-4">
           <div class="col-3">
-            <div>Produk Desa : {{$produk->nama}}</div>
-            <div>Produksi Oleh : {{$produk->product_by}}</div>
-            <div>Jenis Produk : {{$produk->product_type}}</div>
+            <div>Nama Potensi Desa : {{$potency->nama}}</div>
+            <div>Dikelola/Diproduksi Oleh : {{$potency->managed_by}}</div>
+            <div>Jenis Potensi : {{$potency->potency_type}}</div>
           </div>
           <div class="col-9">
               <div id="mapid" style="min-height: 500px"></div>
@@ -33,7 +33,7 @@
 	// L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
 
 	// base map
-	axios.get('{{ route("api.map.desa.id", $produk->desa->id) }}')
+	axios.get('{{ route("api.map.desa.id", $potency->desa->id) }}')
 	.then(function (response) {
 		geojson = L.geoJSON(response.data, {
 			style: function(geoJsonPoint) {
@@ -62,7 +62,7 @@
     });
     
 
-	axios.get('{{ route("api.map.produk.id", $produk->id) }}')
+	axios.get('{{ route("api.map.potency.id", $potency->id) }}')
 	.then(function (response) {
 		L.geoJSON(response.data, {
 			pointToLayer: function(geoJsonPoint, latlng) {

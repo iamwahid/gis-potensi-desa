@@ -6,13 +6,13 @@
       <div class="row">
           <div class="col-sm-5">
               <h4 class="card-title mb-0">
-                  Produk Desa
+                  Potensi Desa
               </h4>
           </div><!--col-->
 
           <div class="col-sm-7 pull-right">
             <div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
-                <a href="{{ route('admin.desa.produk.create', $desa) }}" class="btn btn-success ml-1" data-toggle="tooltip" title="@lang('labels.general.create_new')"><i class="fas fa-plus-circle"></i></a>
+                <a href="{{ route('admin.desa.potency.create', $desa) }}" class="btn btn-success ml-1" data-toggle="tooltip" title="@lang('labels.general.create_new')"><i class="fas fa-plus-circle"></i></a>
             </div><!--btn-toolbar--> 
           </div><!--col-->
       </div><!--row-->
@@ -23,18 +23,18 @@
                   <table class="table">
                       <thead>
                       <tr>
-                          <th>Nama Produk</th>
-                          <th>Produksi Oleh</th>
-                          <th>Jenis Produk</th>
+                          <th>Nama Potensi</th>
+                          <th>Dikelola/Diproduksi Oleh</th>
+                          <th>Jenis Potensi</th>
                           <th>@lang('labels.general.actions')</th>
                       </tr>
                       </thead>
                       <tbody>
-                      @foreach($produks as $d)
+                      @foreach($potencies as $d)
                           <tr>
                               <td>{{ ucwords($d->nama) }}</td>
-                              <td>{{ ucwords($d->product_by) }}</td>
-                              <td>{{ ucwords($d->product_type) }}</td>
+                              <td>{{ ucwords($d->managed_by) }}</td>
+                              <td>{{ ucwords($d->potency_type) }}</td>
                               <td>{!! $d->action_buttons !!}</td>
                           </tr>
                       @endforeach
@@ -46,13 +46,13 @@
       <div class="row">
           <div class="col-7">
               <div class="float-left">
-                  {{-- {!! $produks->total() !!} {{ trans_choice('labels.backend.access.roles.table.total', $produks->total()) }} --}}
+                  {{-- {!! $potencies->total() !!} {{ trans_choice('labels.backend.access.roles.table.total', $potencies->total()) }} --}}
               </div>
           </div><!--col-->
 
           <div class="col-5">
               <div class="float-right">
-                  {{-- {!! $produks->render() !!} --}}
+                  {{-- {!! $potencies->render() !!} --}}
               </div>
           </div><!--col-->
       </div><!--row-->
