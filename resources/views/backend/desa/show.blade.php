@@ -34,63 +34,11 @@
 
 @push('after-scripts')
 <script>
-	// Bound line
-	// var latlngs = L.rectangle(bounds).getLatLngs();
-	// L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
+// base map    
+loadMapArea('{{ route("api.map.desa.id", $desa->id) }}', function(){
+	map.fitBounds(geojson.getBounds())
+}, true)
 
-	// base map
-	axios.get('{{ route("api.map.desa.id", $desa->id) }}')
-	.then(function (response) {
-		geojson = L.geoJSON(response.data, {
-			style: function(geoJsonPoint) {
-					console.log(geoJsonPoint.properties.penduduk_total);
-					return {color: getColor(geoJsonPoint.properties.penduduk_total), "weight": 1, "opacity": 0.65};
-			},
-		})
-		.bindPopup(function (layer) {
-			return layer.feature.properties.map_content;
-		},
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			opacity: 0.75,
-			className: 'leaflet-c-popup'
-        })
-        .addTo(map);
-        
-        map.fitBounds(geojson.getBounds())
-		
-	})
-	.catch(function (error) {
-		console.log(error);
-    });
-    
-
-	axios.get('{{ route("api.map.desa.potency", $desa->id) }}')
-	.then(function (response) {
-		L.geoJSON(response.data, {
-			pointToLayer: function(geoJsonPoint, latlng) {
-						return L.marker(latlng, {icon: markers[geoJsonPoint.properties.marker_color]});
-				}
-		})
-		.bindPopup(function(layer){
-			return layer.feature.properties.map_content;
-		}, 
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			opacity: 0.75,
-			className: 'leaflet-c-popup'
-		})
-		.addTo(map);
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
-
+loadMapMarker('{{ route("api.map.desa.potency", $desa->id) }}')
 </script>
 @endpush

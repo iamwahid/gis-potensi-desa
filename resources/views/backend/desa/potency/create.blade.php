@@ -90,76 +90,15 @@
 
 @push('after-scripts')
 <script>    
-    // Bound line
-    // var latlngs = L.rectangle(bounds).getLatLngs();
-    // L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
+// base map
+loadMapArea('{{ route("api.map.desa.id", $desa->id) }}', function(){
+    map.fitBounds(geojson.getBounds())
+    marker = L.marker(geojson.getBounds().getCenter(), {icon: markers['red']}).addTo(map);
+    $('#map_lat').val(marker.getLatLng().lat);
+    $('#map_long').val(marker.getLatLng().lng);
+}, true, true);
 
-	// base map
-	axios.get('{{ route("api.map.desa.id", $desa->id) }}')
-	.then(function (response) {
-		geojson = L.geoJSON(response.data, {
-			style: function(geoJsonPoint) {
-					console.log(geoJsonPoint.properties.penduduk_total);
-					return {color: getColor(geoJsonPoint.properties.penduduk_total), "weight": 1, "opacity": 0.65};
-			},
-		})
-        .addTo(map);
-        
-        map.fitBounds(geojson.getBounds())
-        marker = L.marker(geojson.getBounds().getCenter(), {icon: markers['red']}).addTo(map);
-        $('#map_lat').val(marker.getLatLng().lat);
-        $('#map_long').val(marker.getLatLng().lng);
-		
-	})
-	.catch(function (error) {
-		console.log(error);
-    });
-    
-
-	axios.get('{{ route("api.map.desa.potency", $desa->id) }}')
-	.then(function (response) {
-		L.geoJSON(response.data, {
-			pointToLayer: function(geoJsonPoint, latlng) {
-                    console.log(geoJsonPoint.properties.marker_color)
-                    return L.marker(latlng, {icon: markers[geoJsonPoint.properties.marker_color]});
-				}
-		})
-		.bindPopup(function(layer){
-			return layer.feature.properties.map_content;
-		}, 
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			opacity: 0.75,
-			className: 'leaflet-c-popup'
-		})
-		.addTo(map);
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
-
-	function getRandomColor() {
-        var letters = '0123456789ABCDEF';
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-                return color;
-    }
-    
-    function getColor(d) {
-        return d > 1000 ? '#800026' :
-            d > 500  ? '#BD0026' :
-            d > 200  ? '#E31A1C' :
-            d > 100  ? '#FC4E2A' :
-            d > 50   ? '#FD8D3C' :
-            d > 20   ? '#FEB24C' :
-            d > 10   ? '#FED976' :
-                        '#16990D';
-    }
+loadMapMarker('{{ route("api.map.desa.potency", $desa->id) }}')
 
 </script>
 

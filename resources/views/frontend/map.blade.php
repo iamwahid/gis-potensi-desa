@@ -2,6 +2,19 @@
 
 @section('title', app_name() . ' | ' . __('navs.general.home'))
 
+@push('after-styles')
+<style>
+	#form-search [value^=optbold_] {
+			font-weight: bold;
+			font-style: italic;
+	}
+			
+	#form-search select option {
+			font-style: italic;
+	}
+</style>
+@endpush
+
 @section('content')
 
 <div class="container">
@@ -11,11 +24,14 @@
 				<div class="card-header">
 					<div class="d-flex">
 						<div class="py-1"><i class="fas fa-map-marked-alt"></i> Peta Ponorogo</div>
-						<form class="ml-auto" action="">
+						<form class="ml-auto" action="" id="form-search">
+							<strong>Pencarian Potensi</strong> 
 							<div class="input-group">
-								<input type="text" name="cari" class="form-control form-control-sm" required="" maxlength="10" placeholder="Cari nama desa..." aria-describedby="button-addon2">
+								{{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('form-control form-control-sm') }}
+								{{ html()->select('potensi')->options([''=> 'Jenis Potensi'] + $potensi)->class('form-control form-control-sm') }}
+								{{ html()->text('keyword')->class('form-control form-control-sm') }}
 								<div class="input-group-append">
-									<button type="submit" class="btn btn-primary btn-sm" id="button-addon2">Cari</button>
+									<button type="submit" class="btn btn-primary btn-sm" id="button-search">Cari</button>
 								</div>
 							</div>
 						</form>
@@ -33,147 +49,28 @@
 
 @push('after-scripts')
 <script>
-	// Bound line
-	// var latlngs = L.rectangle(bounds).getLatLngs();
-	// L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
+// base map
+loadMapArea('{{ route("api.map.desa") }}')
 
-	var zoomto = 'kec';
-	var map_p_markers;
-	var info = L.control();
+loadMapMarker('{{ route("api.map.potency") }}')
 
-	info.onAdd = function (map) {
-			this._div = L.DomUtil.create('div', 'leaflet-side-info'); // create a div with a class "info"
-			this.update();
-			return this._div;
-	};
+$('#button-search').click(function(e){
+	e.preventDefault()
+	searchMap()
+})
 
-	// method that we will use to update the control based on feature properties passed
-	info.update = function (props) {
-			this._div.innerHTML = '<h4>Informasi Peta</h4>' +  (props ?
-					`<b> Wilayah ${props.provinsi} </b><br>
-					Kab. ${props.kabupaten} <br>
-					Kec. ${props.kecamatan} <br>
-					${props.desa} <br>
-					`
-					: 'tunjuk daerah');
-	};
+function searchMap() {
+	let kec_desa_id = $('#kec_desa_id').val()
+	let kec_id = kec_desa_id.split('_')[0] == 'optbold' ? kec_desa_id.split('_')[1] : null;
+	let desa_id = kec_desa_id.split('_')[0] != 'optbold' ? kec_desa_id.replace('_', '') : null;
+	let potensi = $('#potensi').val()
 
-	info.addTo(map);
-
-	function highlightFeature(e) {
-		var layer = e.target;
-
-		layer.setStyle({
-				weight: 5,
-				color: '#666',
-				dashArray: '',
-				fillOpacity: 0.4
-		});
-
-		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-				layer.bringToFront();
-		}
-		info.update(layer.feature.properties);
-	}
-
-	function resetHighlight(e) {
-		geojson.resetStyle(e.target);
-		info.update();
-	}
-	function zoomToFeature(e) {
-		console.log(e)
-		if (zoomto == 'kec') {
-			map.removeLayer(geojson)
-			map.removeLayer(map_p_markers)
-			axios.get(baseUrl+'/api/map/kec/'+e.target.feature.properties.kec_id)
-			.then(function (response) {
-				geojson = L.geoJSON(response.data, {
-					style: function(geoJsonPoint) {
-							return {color: getColor(geoJsonPoint.properties.penduduk_total), "weight": 1, "opacity": 0.65};
-					},
-					onEachFeature: onEachFeature
-				})
-				.bindPopup(function (layer) {
-					return layer.feature.properties.map_content;
-				},
-				{
-					direction: 'right',
-					permanent: false,
-					sticky: true,
-					offset: [10, 0],
-					opacity: 0.75,
-					className: 'leaflet-c-popup'
-				})
-				.addTo(map);
-				
-				map.fitBounds(geojson.getBounds())
-				zoomto = 'desa'
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-		} else map.fitBounds(e.target.getBounds());
-	}
-
-	function onEachFeature(feature, layer) {
-		layer.on({
-				mouseover: highlightFeature,
-				mouseout: resetHighlight,
-				click: zoomToFeature,
-		});
-	}
-
-	// base map
-	axios.get('{{ route("api.map.desa") }}')
-	.then(function (response) {
-		geojson = L.geoJSON(response.data, {
-			style: function(geoJsonPoint) {
-					return {color: getColor(geoJsonPoint.properties.penduduk_total), "weight": 1, "opacity": 0.65};
-			},
-			onEachFeature: onEachFeature
-		})
-		.bindPopup(function (layer) {
-			return layer.feature.properties.map_content;
-		},
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			opacity: 0.75,
-			className: 'leaflet-c-popup'
-		})
-		.addTo(map);
-		
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
-
-	axios.get('{{ route("api.map.potency") }}')
-	.then(function (response) {
-		map_p_markers = L.geoJSON(response.data, {
-			pointToLayer: function(geoJsonPoint, latlng) {
-					return L.marker(latlng, {icon: markers[geoJsonPoint.properties.marker_color]});
-				}
-		})
-		.bindPopup(function(layer){
-			return layer.feature.properties.map_content;
-		}, 
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			opacity: 0.75,
-			className: 'leaflet-c-popup'
-		})
-		.addTo(map);
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
-
+	let type = potensi.split('_')[0] == 'optbold' ? potensi.split('_')[1] : null;
+	let category = potensi.split('_')[0] != 'optbold' ? potensi : null;
+	let keyword = $('#keyword').val()
+	map.removeLayer(map_p_markers)
+	loadMapMarker('{{ route("api.map.potency.search") }}', {kec_id, desa_id, type, category, keyword})
+}
 
 </script>
 @endpush

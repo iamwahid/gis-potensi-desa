@@ -17,11 +17,20 @@ return [
           'wisata' => 'Wisata'
         ],
         'potency_category' => [
-          'pemandangan' => 'Pemandangan Alam',
-          'buper' => 'Bumi Perkemahan',
-          'telaga' => 'Telaga',
-          'danau' => 'Danau',
-          'makanan' => 'Makanan'
+          //Wisata
+          'Wisata' => [
+            'pemandangan' => 'Pemandangan Alam',
+            'buper' => 'Bumi Perkemahan',
+            'telaga' => 'Telaga',
+            'danau' => 'Danau',
+            'rest_area' => 'Rest Area',
+          ],
+          //Produk
+          'Produk' => [
+            'makanan' => 'Makanan',
+            'minuman' => 'Minuman',
+            'kerajinan' => 'Kerajinan',
+          ]
         ],
         'potency_source' => [
           'alam' => 'Hasil Alam',

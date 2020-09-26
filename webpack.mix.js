@@ -18,7 +18,7 @@ mix.setResourceRoot('../');
 mix.sass('resources/sass/frontend/app.scss', 'css/frontend.css')
     .sass('resources/sass/backend/app.scss', 'css/backend.css')
     .js('resources/js/frontend/app.js', 'js/frontend.js')
-    .copy('resources/js/map-init.js', 'public/js/map-init.js')
+    .scripts('resources/js/map-init.js', 'public/js/map-init.js')
     .js([
         'resources/js/backend/before.js',
         'resources/js/backend/app.js',

@@ -16,13 +16,13 @@
         </div><!--col-->
     </div><!--row-->
 
-    {{-- <div class="row mb-4">
+    <div class="row mb-4">
         <div class="col">
             <example-component></example-component>
         </div><!--col-->
     </div><!--row-->
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header">

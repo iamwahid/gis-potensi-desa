@@ -14,6 +14,7 @@ var map = new L.Map('mapid', {
     maxBoundsViscosity: 1.0
 });
 var geojson;
+var map_p_markers;
 
 var greenIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -33,6 +34,68 @@ var goldIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
+var zoomto = 'kec';
+var info = L.control();
+
+info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'leaflet-side-info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+        this._div.innerHTML = '<h4>Informasi Peta</h4>' +  (props ?
+                `<b> Wilayah ${props.provinsi} </b><br>
+                Kab. ${props.kabupaten} <br>
+                Kec. ${props.kecamatan} <br>
+                ${props.desa} <br>
+                `
+                : 'tunjuk daerah');
+};
+
+info.addTo(map);
+
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.4
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+    }
+    info.update(layer.feature.properties);
+}
+
+function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+    info.update();
+}
+
+function zoomToFeature(e) {
+    if (zoomto == 'kec') {
+        map.removeLayer(geojson)
+        map.removeLayer(map_p_markers)
+        loadMapArea(baseUrl+'/api/map/kec/'+e.target.feature.properties.kec_id, function(){
+            map.fitBounds(geojson.getBounds())
+            zoomto = 'desa'
+        })
+    } else map.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature,
+    });
+}
+
 function awMarker(icon, markerColor) {
     return L.divIcon({
         className: 'custom-div-icon',
@@ -44,7 +107,6 @@ function awMarker(icon, markerColor) {
     });
 }
 
-// let available_marker = JSON.parse('{!!json_encode(config("gisdesa.value.desa.marker.available"))!!}')
 let markers = {};
 for (const key in available_marker) {
     if (available_marker.hasOwnProperty(key)) {
@@ -75,4 +137,72 @@ function getColor(d) {
         d > 20   ? '#FEB24C' :
         d > 10   ? '#FED976' :
                     '#16990D';
+}
+
+function loadMapArea(url, callback, disableEachFeature, disablePopup) {
+	callback = callback || function(){};
+    disableEachFeature = disableEachFeature || false;
+    disableEachFeature = disableEachFeature || false;
+	axios.get(url)
+		.then(function (response) {
+			geojson = L.geoJSON(response.data, {
+				style: function(geoJsonPoint) {
+						return {color: getColor(geoJsonPoint.properties.penduduk_total), "weight": 1, "opacity": 0.65};
+				},
+				onEachFeature: disableEachFeature ? function(){} : onEachFeature
+			});
+            
+            if (!disablePopup) {
+                geojson = geojson.bindPopup(function (layer) {
+                    return layer.feature.properties.map_content;
+                },
+                {
+                    direction: 'right',
+                    permanent: false,
+                    sticky: true,
+                    offset: [10, 0],
+                    opacity: 0.75,
+                    className: 'leaflet-c-popup'
+                })
+            }
+            
+			geojson.addTo(map);
+
+			callback()
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+}
+
+function loadMapMarker(url, params, callback) {
+	params = params || {};
+	callback = callback || function(){};
+	axios.get(url, {
+		params:params
+	})
+	.then(function (response) {
+		map_p_markers = L.geoJSON(response.data, {
+			pointToLayer: function(geoJsonPoint, latlng) {
+					return L.marker(latlng, {icon: markers[geoJsonPoint.properties.marker_color]});
+				}
+		})
+		.bindPopup(function(layer){
+			return layer.feature.properties.map_content;
+		}, 
+		{
+			direction: 'right',
+			permanent: false,
+			sticky: true,
+			offset: [10, 0],
+			opacity: 0.75,
+			className: 'leaflet-c-popup'
+		})
+		.addTo(map);
+
+		callback()
+	})
+	.catch(function (error) {
+		console.log(error);
+	});
 }
