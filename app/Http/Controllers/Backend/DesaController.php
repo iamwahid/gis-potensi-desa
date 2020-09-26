@@ -30,7 +30,9 @@ class DesaController extends Controller
      */
     public function index()
     {
-        $desas = $this->desas->paginate();
+        $kec = request()->get('kec') ?: null;
+        $nama = request()->get('nama') ?: null;
+        $desas = $this->desas->kecamatan($kec)->nama($nama)->paginate(30);
         $kecamatans = $this->kecamatans->get();
         return view('backend.desa.index', compact(['desas', 'kecamatans']));
     }

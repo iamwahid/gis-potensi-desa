@@ -17,4 +17,9 @@ class DataWilayah extends Model
     {
         return $this->belongsTo(Kecamatan::class, 'kec_id');
     }
+
+    public function potencies()
+    {
+        return $this->hasMany(Potency::class, 'desa_id', 'desa_id');
+    }
 }

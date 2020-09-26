@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\Auth\DesaRepository;
 use App\Repositories\Backend\Auth\PotencyRepository;
+use Request;
 
 /**
  * Class MapController.
@@ -49,5 +50,17 @@ class MapController extends Controller
     public function mapPotencyByDesaId($id)
     {
         return $this->potencies->getMapByDesaId($id);
+    }
+
+    public function mapSearch()
+    {
+        $keys = request()->validate([
+            'keyword' => 'nullable|string',
+            'type' => 'nullable',
+            'category' => 'nullable',
+            'desa_id' => 'nullable',
+            'kec_id' => 'nullable'
+        ]);
+        return toGeoJSON($this->potencies->searchBy($keys));
     }
 }

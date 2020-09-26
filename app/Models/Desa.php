@@ -46,7 +46,7 @@ class Desa extends Model
         <a href="$show" class="btn btn-success">Lihat</a>
         <a href="$edit" class="btn btn-primary">Edit</a>
         <a href="$potency" class="btn btn-primary">Potensi Desa</a>
-        <a href="$delete" class="btn btn-danger delete-item disabled">Hapus</a>
+        <a href="$delete" class="btn btn-danger" data-method="delete">Hapus</a>
         </div>
 HTML;
         return $html;
@@ -65,5 +65,16 @@ HTML;
         ];
         $content = view('components.map.popup', compact(['props', 'links']))->render();
         return $content;
+    }
+
+    public function scopeNama($query, $nama = '')
+    {
+        return $query->where('nama', 'like', '%'.$nama.'%');
+    }
+
+    public function scopeKecamatan($query, $kec_id = null)
+    {
+        if (!$kec_id) return $query;
+        return $query->where('kec_id', $kec_id);
     }
 }

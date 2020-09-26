@@ -65,9 +65,40 @@ class Potency extends Model
         <div class="btn-group">
         <a href="$show" class="btn btn-success">Lihat</a>
         <a href="$edit" class="btn btn-primary">Edit</a>
-        <a href="$delete" class="btn btn-danger delete-item">Hapus</a>
+        <a href="$delete" class="btn btn-danger" data-method="delete">Hapus</a>
         </div>
 HTML;
         return $html;
+    }
+
+    public function scopeKeyword($query, $keyword = '')
+    {
+        return $query->where('nama', 'like', '%'.$keyword.'%')->orWhere('deskripsi', 'like', '%'.$keyword.'%');
+    }
+
+    public function scopeType($query, $type = null)
+    {
+        if (!$type) return $query;
+        return $query->where('potency_type', $type);
+    }
+
+    public function scopeCategory($query, $category = null)
+    {
+        if (!$category) return $query;
+        return $query->where('potency_category', $category);
+    }
+
+    public function scopeDesa($query, $desa_id = null)
+    {
+        if (!$desa_id) return $query;
+        return $query->where('desa_id', $desa_id);
+    }
+
+    public function scopeKecamatan($query, $kec_id = null)
+    {
+        if (!$kec_id) return $query;
+        return $query->whereHas('desa', function($d) use ($kec_id) {
+            return $d->where('kec_id', $kec_id);
+        });
     }
 }

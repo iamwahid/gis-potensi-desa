@@ -94,4 +94,17 @@ class PotencyRepository extends BaseRepository
             'features' => $features
         ]);
     }
+
+    public function searchBy($search)
+    {
+        extract($search);
+        return $this
+        ->kecamatan($kec_id ?? null)
+        ->desa($desa_id ?? null)
+        ->type($type ?? null)
+        ->category($category ?? null)
+        ->keyword($keyword ?? '')
+        ->get();
+    }
+
 }
