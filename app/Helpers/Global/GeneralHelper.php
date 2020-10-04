@@ -42,3 +42,13 @@ if (! function_exists('home_route')) {
         return 'frontend.index';
     }
 }
+
+if (! function_exists('array_only')) {
+
+    function array_only(array $array, array $keys = [])
+    {
+        return collect($array)->filter(function($d, $k) use ($keys){
+            return in_array($k, $keys);
+        })->toArray();
+    }
+}

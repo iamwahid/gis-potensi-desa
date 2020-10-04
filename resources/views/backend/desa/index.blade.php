@@ -1,5 +1,18 @@
 @extends('backend.layouts.app')
 
+@push('after-styles')
+<style>
+	#form-search [value^=optbold_] {
+			font-weight: bold;
+			font-style: italic;
+	}
+			
+	#form-search select option {
+			font-style: italic;
+	}
+</style>
+@endpush
+
 @section('content')
 <div class="card">
   <div class="card-body">
@@ -11,9 +24,14 @@
           </div><!--col-->
 
           <div class="col-sm-7 pull-right">
-            <div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
+              <div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
+                <form class="ml-auto" action="" id="form-search">
+                    <div class="input-group">
+                        {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('form-control')->value(request('kec_desa_id')) }}
+                    </div>
+                </form>
                 <a href="{{ route('admin.desa.create') }}" class="btn btn-success ml-1 disabled" data-toggle="tooltip" title="@lang('labels.general.create_new')"><i class="fas fa-plus-circle"></i></a>
-            </div><!--btn-toolbar-->            
+            </div><!--btn-toolbar-->
           </div><!--col-->
       </div><!--row-->
 
@@ -84,6 +102,10 @@ $('.delete-item').click(function(e){
             }
         })
     }
+})
+
+$('#kec_desa_id').on('change', function(ev) {
+    window.location = '{{route("admin.desa.index")}}'+'?kec_desa_id='+$(this).val()
 })
 </script>
 @endpush

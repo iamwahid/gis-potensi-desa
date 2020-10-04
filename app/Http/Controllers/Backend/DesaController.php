@@ -30,11 +30,30 @@ class DesaController extends Controller
      */
     public function index()
     {
-        $kec = request()->get('kec') ?: null;
-        $nama = request()->get('nama') ?: null;
-        $desas = $this->desas->kecamatan($kec)->nama($nama)->paginate(30);
+        $kec_desa = request()->get('kec_desa_id') ?: '';
+        $kec_desa = explode('_', $kec_desa);
+        if ($kec_desa && $kec_desa[0] == 'optbold') {
+            $kec = $kec_desa[1];
+            $desa = null;
+        } else {
+            $kec = null;
+            $desa = $kec_desa[0];
+        }
+        $desas = $this->desas->kecamatan($kec)->id($desa)->paginate(30);
         $kecamatans = $this->kecamatans->get();
-        return view('backend.desa.index', compact(['desas', 'kecamatans']));
+        $ddesa = $this->desas->get();
+        $kec_desa = $this->kecamatans->get()->mapWithKeys(function($d) use ($ddesa){
+            $kec = ['optbold_'.$d->id => 'Kec. '.$d->nama];
+            $desa = $ddesa->where('kec_id', $d->id)->pluck('nama', 'id')->mapWithKeys(function($it, $key){
+                return [$key.'_' => $it];
+            })->toArray();
+            return [$d->id => $kec + $desa];
+        })->flatMap(function($d){
+            return $d;
+        })->toArray();
+
+
+        return view('backend.desa.index', compact(['desas', 'kec_desa']));
     }
 
     /**
@@ -57,7 +76,48 @@ class DesaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            
+            'nama' => 'required',
+            'penduduk_total' => 'nullable',
+            'penduduk_pria' => 'nullable',
+            'penduduk_wanita' => 'nullable',
+            'penduduk_produktif' => 'nullable',
+            'penduduk_work_formal' => 'nullable',
+            'penduduk_work_informal' => 'nullable',
+            'penduduk_work_none' => 'nullable',
+            'penduduk_sector_agriculture' => 'nullable',
+            'penduduk_sector_mining' => 'nullable',
+            'penduduk_sector_industry' => 'nullable',
+            'penduduk_sector_construction' => 'nullable',
+            'penduduk_sector_trade' => 'nullable',
+            'penduduk_sector_service' => 'nullable',
+            'penduduk_sector_transportation' => 'nullable',
+            'penduduk_edu_none' => 'nullable',
+            'penduduk_edu_sd' => 'nullable',
+            'penduduk_edu_smp' => 'nullable',
+            'penduduk_edu_sma' => 'nullable',
+            'penduduk_edu_s1' => 'nullable',
+            'penduduk_edu_s2' => 'nullable',
+            'penduduk_edu_s3' => 'nullable',
+            'penduduk_religion_islam' => 'nullable',
+            'penduduk_religion_protestan' => 'nullable',
+            'penduduk_religion_katolik' => 'nullable',
+            'penduduk_religion_hindu' => 'nullable',
+            'penduduk_religion_buddha' => 'nullable',
+            'penduduk_religion_lain' => 'nullable',
+            'penduduk_dis_blind' => 'nullable',
+            'penduduk_dis_deaf' => 'nullable',
+            'penduduk_dis_mute' => 'nullable',
+            'penduduk_dis_body' => 'nullable',
+            'penduduk_dis_mental' => 'nullable',
+            'penduduk_persen_kecamatan' => 'nullable',
+            'penduduk_padat_km2' => 'nullable',
+            'rts_raskin' => 'nullable',
+            'rts_jamkesmas' => 'nullable',
+            'rts_pkh' => 'nullable',
+            'rts_blsm' => 'nullable',
+            'letak_tinggi_kantor_desa' => 'nullable',
+            'luas_wilayah' => 'nullable',
+            'luas_persen_kecamatan' => 'nullable',
         ]);
 
         // $this->desas->create($data);
@@ -98,10 +158,51 @@ class DesaController extends Controller
     public function update(Request $request, Desa $desa)
     {
         $data = $request->validate([
-            
+            'nama' => 'required',
+            'penduduk_total' => 'nullable',
+            'penduduk_pria' => 'nullable',
+            'penduduk_wanita' => 'nullable',
+            'penduduk_produktif' => 'nullable',
+            'penduduk_work_formal' => 'nullable',
+            'penduduk_work_informal' => 'nullable',
+            'penduduk_work_none' => 'nullable',
+            'penduduk_sector_agriculture' => 'nullable',
+            'penduduk_sector_mining' => 'nullable',
+            'penduduk_sector_industry' => 'nullable',
+            'penduduk_sector_construction' => 'nullable',
+            'penduduk_sector_trade' => 'nullable',
+            'penduduk_sector_service' => 'nullable',
+            'penduduk_sector_transportation' => 'nullable',
+            'penduduk_edu_none' => 'nullable',
+            'penduduk_edu_sd' => 'nullable',
+            'penduduk_edu_smp' => 'nullable',
+            'penduduk_edu_sma' => 'nullable',
+            'penduduk_edu_s1' => 'nullable',
+            'penduduk_edu_s2' => 'nullable',
+            'penduduk_edu_s3' => 'nullable',
+            'penduduk_religion_islam' => 'nullable',
+            'penduduk_religion_protestan' => 'nullable',
+            'penduduk_religion_katolik' => 'nullable',
+            'penduduk_religion_hindu' => 'nullable',
+            'penduduk_religion_buddha' => 'nullable',
+            'penduduk_religion_lain' => 'nullable',
+            'penduduk_dis_blind' => 'nullable',
+            'penduduk_dis_deaf' => 'nullable',
+            'penduduk_dis_mute' => 'nullable',
+            'penduduk_dis_body' => 'nullable',
+            'penduduk_dis_mental' => 'nullable',
+            'penduduk_persen_kecamatan' => 'nullable',
+            'penduduk_padat_km2' => 'nullable',
+            'rts_raskin' => 'nullable',
+            'rts_jamkesmas' => 'nullable',
+            'rts_pkh' => 'nullable',
+            'rts_blsm' => 'nullable',
+            'letak_tinggi_kantor_desa' => 'nullable',
+            'luas_wilayah' => 'nullable',
+            'luas_persen_kecamatan' => 'nullable',
         ]);
 
-        // $this->desas->updateById($desa->id, $data);
+        $this->desas->updateById($desa->id, $data);
         return redirect()->route('admin.desa.index')->withFlashSuccess('success');
     }
 

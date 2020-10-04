@@ -20,9 +20,10 @@
 
       <div class="row mt-4">
           <div class="col-3">
-            <div>Desa : {{$desa->nama}}</div>
             <div>Kecamatan : {{$desa->kecamatan->nama}}</div>
-            <div>Penduduk : {{$desa->penduduk_total}} Jiwa</div>
+            @foreach ($desa->attrs as $k => $attr)
+                <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} </div>
+            @endforeach
           </div>
           <div class="col-9">
               <div id="mapid" style="min-height: 500px"></div>

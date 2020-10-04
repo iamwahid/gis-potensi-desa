@@ -89,7 +89,7 @@
 @endsection
 
 @push('after-scripts')
-<script>    
+<script>
 // base map
 loadMapArea('{{ route("api.map.desa.id", $desa->id) }}', function(){
     map.fitBounds(geojson.getBounds())
