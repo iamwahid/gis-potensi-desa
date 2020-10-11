@@ -39,7 +39,7 @@
         </div>
         <div class="col">
               <label for="penduduk_produktif">@lang('labels.desa.table.penduduk_produktif')</label>
-              {{ html()->text('penduduk_total')->class('form-control')->attribute('min', 0)->attribute('type', 'number')->required() }}
+              {{ html()->text('penduduk_produktif')->class('form-control')->attribute('min', 0)->attribute('type', 'number')->required() }}
         </div>
     </div>
     <div class="row mt-2">
