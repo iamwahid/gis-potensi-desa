@@ -95,15 +95,15 @@ HTML;
     public function getMapcontentAttribute()
     {   
         $props = [
-            'Desa : '. $this->nama,
+            'Desa/Kelurahan : '. $this->nama,
             'Kecamatan : '.$this->kecamatan->nama,
             'Kabupaten : '.$this->kecamatan->kabupaten,
-            'Koordinat : '.$this->map_lat.', '.$this->map_long
+            'Jumlah Total Penduduk : '.$this->penduduk_total.' Jiwa',
         ];
         $links = [
             route('admin.desa.show', $this->id) => 'Lihat Detail',
         ];
-        $content = view('components.map.popup', compact(['props', 'links']))->render();
+        $content = view('components.map.popup-large', compact(['props', 'links']))->render();
         return $content;
     }
 
@@ -149,6 +149,90 @@ HTML;
             'rts_jamkesmas',
             'rts_pkh',
             'rts_blsm',
+            'letak_tinggi_kantor_desa',
+            'luas_wilayah',
+            'luas_persen_kecamatan',
+        ]);
+    }
+
+    public function getJumlahPendudukAttribute()
+    {
+        return array_only($this->toArray(), [
+            'penduduk_total',
+            'penduduk_pria',
+            'penduduk_wanita',
+            'penduduk_produktif',
+            'penduduk_persen_kecamatan',
+            'penduduk_padat_km2',
+        ]);
+    }
+
+    public function getPekerjaanPendudukAttribute()
+    {
+        return array_only($this->toArray(), [
+            'penduduk_work_formal',
+            'penduduk_work_informal',
+            'penduduk_work_none',
+            'penduduk_sector_agriculture',
+            'penduduk_sector_mining',
+            'penduduk_sector_industry',
+            'penduduk_sector_construction',
+            'penduduk_sector_trade',
+            'penduduk_sector_service',
+            'penduduk_sector_transportation',
+        ]);
+    }
+
+    public function getPendidikanPendudukAttribute()
+    {
+        return array_only($this->toArray(), [
+            'penduduk_edu_none',
+            'penduduk_edu_sd',
+            'penduduk_edu_smp',
+            'penduduk_edu_sma',
+            'penduduk_edu_s1',
+            'penduduk_edu_s2',
+            'penduduk_edu_s3',
+        ]);
+    }
+
+    public function getDisPendudukAttribute()
+    {
+        return array_only($this->toArray(), [
+            'penduduk_dis_blind',
+            'penduduk_dis_deaf',
+            'penduduk_dis_mute',
+            'penduduk_dis_body',
+            'penduduk_dis_mental',
+        ]);
+    }
+
+    public function getAgamaPendudukAttribute()
+    {
+        return array_only($this->toArray(), [
+            'penduduk_religion_islam',
+            'penduduk_religion_protestan',
+            'penduduk_religion_katolik',
+            'penduduk_religion_hindu',
+            'penduduk_religion_buddha',
+            'penduduk_religion_lain',
+        ]);
+    }
+
+    public function getRtsPendudukAttribute()
+    {
+        return array_only($this->toArray(), [
+            'rts_raskin',
+            'rts_jamkesmas',
+            'rts_pkh',
+            'rts_blsm',
+        ]);
+    }
+
+    public function getInfoDesaAttribute()
+    {
+        return array_only($this->toArray(), [
+            'nama',
             'letak_tinggi_kantor_desa',
             'luas_wilayah',
             'luas_persen_kecamatan',

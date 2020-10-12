@@ -12,7 +12,7 @@
           </div><!--col-->
       </div><!--row-->
 
-    {{ html()->modelForm($desa, 'POST', route('admin.desa.update', $desa))->open() }}
+    {{ html()->modelForm($desa, 'POST', route('admin.desa.update', $desa))->acceptsFiles()->open() }}
     <div class="row mt-4">
         <div class="col">
             <label for="nama">Desa</label>
@@ -23,6 +23,10 @@
             {{ html()->select('kec_id')
             ->options($kecamatans)->class('form-control')->required() }}
         </div>
+        {{-- <div class="col">
+            <label for="img">Gambar</label><small>Pilih gambar jika memperbarui</small>
+            {{ html()->file('image')->class('d-block')->accept('.jpg,.png,.jpeg') }}
+        </div> --}}
     </div>
     <div class="row mt-2">
         <div class="col">

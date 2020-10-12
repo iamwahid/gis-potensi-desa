@@ -6,27 +6,27 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ active_class(Active::checkUriPattern('admin/dashboard')) }}" href="{{ route('admin.dashboard') }}">
-                    <i class="nav-icon icon-speedometer"></i> @lang('menus.backend.sidebar.dashboard')
+                    <i class="nav-icon icon-map"></i> Peta
                 </a>
             </li>
 
             {{-- Desa --}}
             <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/desa*'), 'open') }}">
                 <a class="nav-link nav-dropdown-toggle {{ active_class(Active::checkUriPattern('admin/desa*')) }}" href="#">
-                    <i class="nav-icon icon-folder"></i> Desa
+                    <i class="nav-icon icon-folder"></i> Data Wilayah
                 </a>
 
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link {{ active_class(Active::checkUriPattern('admin/desa/')) }}" href="{{ route('admin.desa.index') }}">
-                            Daftar Desa
+                            Semua Data Desa
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link {{ active_class(Active::checkUriPattern('admin/desa/create')) }}" href="{{ route('admin.desa.create') }}">
                             Tambah Desa
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 

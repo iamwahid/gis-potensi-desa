@@ -16,11 +16,11 @@
                 </li>
             @endif --}}
             
-            <li class="nav-item"><a href="{{route('map')}}" class="nav-link {{ active_class(Active::checkRoute('map')) }}">Peta Ponorogo</a></li>
+            {{-- <li class="nav-item"><a href="{{route('map')}}" class="nav-link {{ active_class(Active::checkRoute('map')) }}">Peta Ponorogo</a></li> --}}
 
-            @auth
+            {{-- @auth
                 <li class="nav-item"><a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}">@lang('navs.frontend.dashboard')</a></li>
-            @endauth
+            @endauth --}}
 
             @guest
                 <li class="nav-item"><a href="{{route('frontend.auth.login')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.auth.login')) }}">@lang('navs.frontend.login')</a></li>

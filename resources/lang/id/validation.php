@@ -178,6 +178,8 @@ return [
                     'password'                => 'Sandi',
                     'password_confirmation'   => 'Sandi Konfirmasi',
                     'send_confirmation_email' => 'Kirim E-mail Konfirmasi',
+                    'first_name'     => 'Nama Depan',
+                    'last_name'      => 'Nama Belakang',
                 ],
             ],
         ],

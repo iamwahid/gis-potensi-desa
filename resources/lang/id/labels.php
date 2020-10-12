@@ -29,6 +29,7 @@ return [
         'none'              => 'Tidak ada',
         'show'              => 'Tunjukkan',
         'toggle_navigation' => 'Alihkan Navigasi',
+        'more' => 'Lebih',
     ],
 
     'backend' => [
@@ -68,8 +69,13 @@ return [
                     'id'             => 'ID',
                     'last_updated'   => 'Terakhir Diperbarui',
                     'name'           => 'Nama',
+                    'first_name'     => 'Nama Depan',
+                    'last_name'      => 'Nama Belakang',
                     'no_deactivated' => 'Tidak Ada Pengguna Dinonaktifkan',
                     'no_deleted'     => 'Tidak Ada Pengguna Dihapus',
+                    'other_permissions' => 'Izin Lain',
+                    'permissions' => 'Izin',
+                    'abilities' => 'Hak Akses',
                     'roles'          => 'Peran',
                     'social' => 'Social',
                     'total'          => 'total pengguna|total pengguna',

@@ -19,11 +19,15 @@
     </div>
     <hr>
 
-    {{ html()->modelForm($potency, 'POST', route('admin.desa.potency.update', $potency))->open() }}
+    {{ html()->modelForm($potency, 'POST', route('admin.desa.potency.update', $potency))->acceptsFiles()->open() }}
     <div class="row mt-3">
         <div class="col">
             <label for="nama">Nama Potensi Desa</label>
             {{ html()->text('nama')->class('form-control')->required() }}
+        </div>
+        <div class="col">
+            <label for="img">Gambar</label>  <small>(Pilih gambar jika memperbarui)</small>
+            {{ html()->file('image')->class('d-block')->accept('.jpg,.png,.jpeg') }}
         </div>
     </div>
     <div class="row mt-2">

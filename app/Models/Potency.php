@@ -15,6 +15,7 @@ class Potency extends Model
         'potency_category', // pemandangan, telaga, | kerajinan, makanan, minuman
         'potency_source', // alam, buatan
         'is_draft', // masih konsep
+        'image',
         'map_lat',
         'map_long',
         'map_bound_coordinates',
@@ -38,10 +39,11 @@ class Potency extends Model
             'Deskripsi Potensi : '.$this->deskripsi,
             'Koordinat : '.$this->map_lat.', '.$this->map_long,
         ];
+        $image = $this->image ? asset('storage'.$this->image) : null;
         $links = [
             route('admin.desa.potency.show', $this->id) => 'Lihat Detail',
         ];
-        $content = view('components.map.popup', compact(['props', 'links']))->render();
+        $content = view('components.map.popup', compact(['props', 'links', 'image']))->render();
         return $content;
     }
 

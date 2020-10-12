@@ -1,7 +1,7 @@
 <div class="d-flex flex-row">
-  <div class="p-1">
-    <img src="{{ $image ?: 'http://placehold.it/100x100?text=image'}}" alt="" style="max-width: 100px; max-height:100px">
-  </div>
+  {{-- <div class="p-1">
+    <img src="http://placehold.it/100x100" alt="" width="auto" height="100%">
+  </div> --}}
   <div class="p-1">
     @foreach ($props as $p)
     <div class="d-block">{{$p}}</div>

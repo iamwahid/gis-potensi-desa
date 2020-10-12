@@ -19,12 +19,13 @@
       <div class="row">
           <div class="col-sm-5">
               <h4 class="card-title mb-0">
-                  Desa
+                  
               </h4>
           </div><!--col-->
 
           <div class="col-sm-7 pull-right">
               <div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
+                <strong class="p-1 pr-3">Sortir</strong> 
                 <form class="ml-auto" action="" id="form-search">
                     <div class="input-group">
                         {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('form-control')->value(request('kec_desa_id')) }}

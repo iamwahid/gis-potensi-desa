@@ -10,6 +10,7 @@ use App\Models\Wisata;
 use App\Repositories\Backend\Auth\DesaRepository;
 use App\Repositories\Backend\Auth\KecamatanRepository;
 use App\Repositories\Backend\Auth\PotencyRepository;
+use Storage;
 
 class DesaController extends Controller
 {
@@ -250,8 +251,15 @@ class DesaController extends Controller
             'marker_type' => ['nullable'],
             'marker_color' => ['nullable']
         ]);
-        // dd($data);
-        $desa->potencies()->create($data);
+        $potensi = $desa->potencies()->create($data);
+        
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $path = "/desa/$desa->id/potensi/$potensi->id";
+            $name = $data['nama'] . '-' . time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public'.$path, $name);
+            $potensi->update(['image' => $path.'/'.$name]);
+        }
         return redirect()->route('admin.desa.potency.index', $desa)->withFlashSuccess('success');
     }
 
@@ -280,8 +288,15 @@ class DesaController extends Controller
                 'marker_type' => ['nullable'],
                 'marker_color' => ['nullable']
             ]);
-
-            // dd($data);
+            
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $path = '/desa/'.$potency->desa->id.'/potensi/'.$potency->id;
+                $name = $data['nama'] . '-' . time() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public'.$path, $name);
+                @Storage::delete('public'.$potency->image);
+                $data['image'] = $path.'/'.$name;
+            }
             $potency->update($data);
             return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashSuccess('success');
         }

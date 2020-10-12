@@ -10,7 +10,7 @@ require __DIR__.'/log-viewer.php';
 // Desa
 Breadcrumbs::for('admin.desa.index', function ($trail) {
     $trail->parent('admin.dashboard');
-    $trail->push('Desa', route('admin.desa.index'));
+    $trail->push('Data Wilayah', route('admin.desa.index'));
 });
 
 Breadcrumbs::for('admin.desa.create', function ($trail) {
@@ -51,8 +51,8 @@ Breadcrumbs::for('admin.kecamatan.edit', function ($trail, $kecamatan) {
 
 // Potency
 Breadcrumbs::for('admin.desa.potency.index', function ($trail, $desa) {
-    $trail->parent('admin.dashboard');
-    $trail->push('Potency', route('admin.desa.potency.index', $desa));
+    $trail->parent('admin.desa.index');
+    $trail->push('Potensi Desa', route('admin.desa.potency.index', $desa));
 });
 
 Breadcrumbs::for('admin.desa.potency.create', function ($trail, $desa) {
