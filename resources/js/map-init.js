@@ -3,6 +3,7 @@ var mapurl1 = '//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapS
 var mapurl2 = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var osm = L.tileLayer(mapurl2, {
     maxZoom: 18,
+    minZoom: 10,
     attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
 var map = new L.Map('mapid', {
@@ -81,11 +82,13 @@ function zoomToFeature(e) {
     if (zoomto == 'kec') {
         map.removeLayer(geojson)
         map.removeLayer(map_p_markers)
+        zoomto = 'desa'
         loadMapArea(baseUrl+'/api/map/kec/'+e.target.feature.properties.kec_id, function(){
             map.fitBounds(geojson.getBounds())
-            zoomto = 'desa'
-        })
-    } else map.fitBounds(e.target.getBounds());
+        }, false, false)
+    } else {
+        map.fitBounds(e.target.getBounds());
+    }
 }
 
 function onEachFeature(feature, layer) {
@@ -93,6 +96,9 @@ function onEachFeature(feature, layer) {
             mouseover: highlightFeature,
             mouseout: resetHighlight,
             click: zoomToFeature,
+            dblclick: function(e) {
+                console.log('dbl click')
+            }
     });
 }
 
@@ -118,6 +124,32 @@ for (const key in available_marker) {
 // Bound line
 // var latlngs = L.rectangle(bounds).getLatLngs();
 // L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
+var kecColors = [
+    '#85B569',
+    '#23D37C',
+    '#73B1F7',
+    '#644C9D',
+    '#2F066E',
+    '#9E77D0',
+    '#26F0CD',
+    '#973C84',
+    '#F09518',
+    '#FDB2C2',
+    '#40B014',
+    '#888C18',
+    '#B7B638',
+    '#995C9D',
+    '#9C4882',
+    '#79A8BA',
+    '#A16EDC',
+    '#2B2588',
+    '#BCB9DC',
+    '#B2FA9C',
+]
+
+function kecColor(kec_id) {
+    return kecColors[kec_id-1];
+}
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
@@ -147,7 +179,13 @@ function loadMapArea(url, callback, disableEachFeature, disablePopup) {
 		.then(function (response) {
 			geojson = L.geoJSON(response.data, {
 				style: function(geoJsonPoint) {
-						return {color: getColor(geoJsonPoint.properties.penduduk_total), "weight": 1, "opacity": 0.65};
+                    let clr;
+                    if (zoomto == 'kec') clr = kecColor(geoJsonPoint.properties.kec_id);
+                    else clr = getColor(geoJsonPoint.properties.penduduk_total);
+                    return {
+                        color: clr, 
+                        "weight": 0.5, 
+                        "opacity": 1};
 				},
 				onEachFeature: disableEachFeature ? function(){} : onEachFeature
 			});
