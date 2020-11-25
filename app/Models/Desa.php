@@ -90,7 +90,6 @@ class Desa extends Model
         <a href="$show" class="btn btn-success">Lihat</a>
         <a href="$edit" class="btn btn-primary">Edit</a>
         <a href="$potency" class="btn btn-primary">Potensi Desa $unverified</a>
-        <a href="$delete" class="btn btn-danger" data-method="delete">Hapus</a>
         </div>
 HTML;
         return $html;

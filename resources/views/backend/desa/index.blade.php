@@ -29,10 +29,11 @@
                 <strong class="p-1 pr-3">Sortir</strong> 
                 <form class="ml-auto" action="" id="form-search">
                     <div class="input-group">
-                        {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('select2-single form-control ')->value(request('kec_desa_id')) }}
+                        {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('select2-single form-control')->value(request('kec_desa_id')) }}
                     </div>
                 </form>
-                <a href="{{ route('admin.desa.create') }}" class="btn btn-success ml-1 disabled" data-toggle="tooltip" title="@lang('labels.general.create_new')"><i class="fas fa-plus-circle"></i></a>
+                {{-- <a href="{{ route('admin.desa.create') }}" class="btn btn-success ml-1 disabled" data-toggle="tooltip" title="@lang('labels.general.create_new')"><i class="fas fa-plus-circle"></i></a> --}}
+                <button type="button" class="btn btn-danger ml-1" id="button-reset" data-toggle="tooltip" title="Reset"><i class="fas fa-undo"></i></a>
               </div><!--btn-toolbar-->
               @endcan
           </div><!--col-->
@@ -111,6 +112,9 @@ $('.delete-item').click(function(e){
 
 $('#kec_desa_id').on('change', function(ev) {
     window.location = '{{route("admin.desa.index")}}'+'?kec_desa_id='+$(this).val()
+})
+$('#button-reset').click(function(e){
+    $('.select2-single').val(null).trigger('change');
 })
 </script>
 @endpush

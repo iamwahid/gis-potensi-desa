@@ -93,7 +93,8 @@ function resetMap(kec_id, desa_id, type, category, keyword) {
     map.removeLayer(map_p_markers)
     zoomto = 'kec'
     loadMapArea('{{ route("api.map.desa") }}')
-	loadMapMarker('{{ route("api.map.potency.search") }}', {kec_id, desa_id, type, category, keyword})
+    loadMapMarker('{{ route("api.map.potency.search") }}', {kec_id, desa_id, type, category, keyword})
+    $('.select2-single').val(null).trigger('change');
 }
 
 </script>
