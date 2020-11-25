@@ -32,9 +32,9 @@
                     <div class="card-header-actions">
                         <form class="ml-auto" action="" id="form-search">
                             <div class="input-group">
-                                {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('form-control form-control-sm') }}
-                                {{ html()->select('potensi')->options([''=> 'Jenis Potensi'] + $potensi)->class('form-control form-control-sm') }}
-                                {{ html()->text('keyword')->class('form-control form-control-sm') }}
+                                {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('select2-single form-control') }}
+                                {{ html()->select('potensi')->options([''=> 'Jenis Potensi'] + $potensi)->class('select2-single form-control') }}
+                                {{ html()->text('keyword')->class('form-control') }}
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-primary btn-sm" id="button-search">Cari</button>
                                     <button type="button" class="btn btn-danger btn-sm" id="button-reset">Reset</button>

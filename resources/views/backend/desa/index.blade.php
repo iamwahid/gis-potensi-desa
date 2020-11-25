@@ -29,7 +29,7 @@
                 <strong class="p-1 pr-3">Sortir</strong> 
                 <form class="ml-auto" action="" id="form-search">
                     <div class="input-group">
-                        {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('form-control')->value(request('kec_desa_id')) }}
+                        {{ html()->select('kec_desa_id')->options([''=> 'Kecamatan/Desa'] + $kec_desa)->class('select2-single form-control ')->value(request('kec_desa_id')) }}
                     </div>
                 </form>
                 <a href="{{ route('admin.desa.create') }}" class="btn btn-success ml-1 disabled" data-toggle="tooltip" title="@lang('labels.general.create_new')"><i class="fas fa-plus-circle"></i></a>

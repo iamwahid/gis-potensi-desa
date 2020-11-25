@@ -20,6 +20,19 @@
     <!-- Otherwise apply the normal LTR layouts -->
     {{ style(mix('css/backend.css')) }}
     <link rel="stylesheet" href="{{asset('css/ionicons.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/select2.css')}}">
+    <link rel="stylesheet" href="{{asset('css/select2.bootstrap.css')}}">
+    <style>
+    .select2-selection__rendered {
+        line-height: 31px !important;
+    }
+    .select2-container .select2-selection--single {
+        height: 35px !important;
+    }
+    .select2-selection__arrow {
+        height: 34px !important;
+    }
+    </style>
 
     @stack('after-styles')
 </head>
@@ -64,8 +77,16 @@
     {{-- <script src="https://kit.fontawesome.com/4da986243c.js" crossorigin="anonymous"></script> --}}
     <script src="{{asset('js/vendor/leaflet.awesome-markers.js')}}"></script>
     <script src="{{asset('js/vendor/leaflet.draw.js')}}"></script>
+    <script src="{{asset('js/vendor/ckeditor.js')}}"></script>
+    <script src="{{asset('js/vendor/select2.min.js')}}"></script>
+    <script>
+    $(document).ready(function() {
+        $('.select2-single').select2({
+            theme: 'default'
+        });
+    });
+    </script>
     <script src="{{asset('js/map-init.js')}}"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/23.1.0/classic/ckeditor.js"></script>
     @stack('after-scripts')
 </body>
 </html>
