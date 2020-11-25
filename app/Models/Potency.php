@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Potency extends Model
@@ -21,7 +22,9 @@ class Potency extends Model
         'map_long',
         'map_bound_coordinates',
         'marker_type',
-        'marker_color'
+        'marker_color',
+        'verified',
+        'verified_by',
     ];
 
     protected $appends = [
@@ -31,6 +34,11 @@ class Potency extends Model
     public function desa()
     {
         return $this->belongsTo(Desa::class, 'desa_id');
+    }
+
+    public function verifier()
+    {
+        return $this->hasOne(User::class, 'id', 'verified_by');
     }
 
     public function getMapcontentAttribute()
@@ -72,6 +80,24 @@ class Potency extends Model
         </div>
 HTML;
         return $html;
+    }
+
+    public function getVerifiedLabelAttribute()
+    {
+        $verified = $this->verified ? 'verified' : 'unverified';
+        $badge = $this->verified ? 'badge-success' : 'badge-danger';
+        $verify = route('admin.desa.potency.verify', $this->id);
+        $disabled = auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')]) ? '' : 'style="pointer-events: none"';
+        $html = 
+<<<HTML
+        <a class="badge badge-sm $badge " $disabled href="$verify">$verified</a>
+HTML;
+        return $html;
+    }
+
+    public function getVerifierNameAttribute()
+    {
+        return $this->verifier ? $this->verifier->name : null;
     }
 
     public function getGalleriesAttribute()

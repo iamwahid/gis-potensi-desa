@@ -21,6 +21,7 @@ Route::group(['prefix' => 'desa', 'as' => 'desa.'], function () {
       Route::group(['prefix' => '{potency}'], function () {
         Route::get('', [DesaController::class, 'potencyDesaShow'])->name('show');
         Route::get('/edit', [DesaController::class, 'potencyDesaEdit'])->name('edit');
+        Route::get('/verify', [DesaController::class, 'potencyDesaVerify'])->name('verify');
         Route::post('', [DesaController::class, 'potencyDesaEdit'])->name('update');
         Route::delete('', [DesaController::class, 'potencyDesaDestroy'])->name('destroy');
       });
@@ -35,6 +36,7 @@ Route::group(['prefix' => 'desa', 'as' => 'desa.'], function () {
 
       Route::get('', [DesaController::class, 'show'])->name('show');
       Route::get('/edit', [DesaController::class, 'edit'])->name('edit');
+      Route::get('/verify', [DesaController::class, 'verify'])->name('verify');
       Route::post('', [DesaController::class, 'update'])->name('update');
       Route::delete('', [DesaController::class, 'destroy'])->name('destroy');
     });

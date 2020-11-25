@@ -31,27 +31,37 @@ class DesaController extends Controller
      */
     public function index()
     {
-        $kec_desa = request()->get('kec_desa_id') ?: '';
-        $kec_desa = explode('_', $kec_desa);
-        if ($kec_desa && $kec_desa[0] == 'optbold') {
-            $kec = $kec_desa[1];
-            $desa = null;
-        } else {
-            $kec = null;
-            $desa = $kec_desa[0];
-        }
-        $desas = $this->desas->kecamatan($kec)->id($desa)->paginate(30);
-        $kecamatans = $this->kecamatans->get();
-        $ddesa = $this->desas->get();
-        $kec_desa = $this->kecamatans->get()->mapWithKeys(function($d) use ($ddesa){
-            $kec = ['optbold_'.$d->id => 'Kec. '.$d->nama];
-            $desa = $ddesa->where('kec_id', $d->id)->pluck('nama', 'id')->mapWithKeys(function($it, $key){
-                return [$key.'_' => $it];
+        $kec_desa = [];
+        if (auth()->user()->can('edit backend')) {
+            $kec_desa = request()->get('kec_desa_id') ?: '';
+            $kec_desa = explode('_', $kec_desa);
+            if ($kec_desa && $kec_desa[0] == 'optbold') {
+                $kec = $kec_desa[1];
+                $desa = null;
+            } else {
+                $kec = null;
+                $desa = $kec_desa[0];
+            }
+            $kecamatans = $this->kecamatans->get();
+            $ddesa = $this->desas->get();
+            $kec_desa = $this->kecamatans->get()->mapWithKeys(function($d) use ($ddesa){
+                $kec = ['optbold_'.$d->id => 'Kec. '.$d->nama];
+                $desa = $ddesa->where('kec_id', $d->id)->pluck('nama', 'id')->mapWithKeys(function($it, $key){
+                    return [$key.'_' => $it];
+                })->toArray();
+                return [$d->id => $kec + $desa];
+            })->flatMap(function($d){
+                return $d;
             })->toArray();
-            return [$d->id => $kec + $desa];
-        })->flatMap(function($d){
-            return $d;
-        })->toArray();
+            $desas = $this->desas->getPaginated($this->desas->kecamatan($kec)->id($desa)->get()->sortByDesc(function($d){
+                return $d->unverifieds;
+            }));
+        } else {
+            if (auth()->user()->desa) {
+                return redirect()->route('admin.desa.show', auth()->user()->desa->id);
+            } else return redirect()->route('admin.dashboard')->withFlashWarning('Tidak Memiliki Desa');
+        }
+       
 
 
         return view('backend.desa.index', compact(['desas', 'kec_desa']));
@@ -343,5 +353,25 @@ class DesaController extends Controller
     {
         $this->potencies->deleteById($potency->id);
         return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashSuccess('success');
+    }
+
+    public function potencyDesaVerify(Potency $potency)
+    {
+        if (auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
+            $potency->verified = true;
+            $potency->verified_by = auth()->id();
+            $potency->save();
+        }
+        return redirect()->route('admin.desa.potency.index', $potency->desa->id)->withFlashSuccess('success');
+    }
+
+    public function verify(Desa $desa)
+    {
+        if (auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
+            $desa->verified = true;
+            $desa->verified_by = auth()->id();
+            $desa->save();
+        }
+        return redirect()->route('admin.desa.index')->withFlashSuccess('success');
     }
 }

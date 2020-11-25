@@ -24,6 +24,7 @@
           </div><!--col-->
 
           <div class="col-sm-7 pull-right">
+              @can('edit backend')
               <div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
                 <strong class="p-1 pr-3">Sortir</strong> 
                 <form class="ml-auto" action="" id="form-search">
@@ -32,7 +33,8 @@
                     </div>
                 </form>
                 <a href="{{ route('admin.desa.create') }}" class="btn btn-success ml-1 disabled" data-toggle="tooltip" title="@lang('labels.general.create_new')"><i class="fas fa-plus-circle"></i></a>
-            </div><!--btn-toolbar-->
+              </div><!--btn-toolbar-->
+              @endcan
           </div><!--col-->
       </div><!--row-->
 
@@ -45,15 +47,17 @@
                           <th>Nama</th>
                           <th>Kecamatan</th>
                           <th>Jml Penduduk</th>
+                          <th>Verifikator</th>
                           <th>@lang('labels.general.actions')</th>
                       </tr>
                       </thead>
                       <tbody>
                       @foreach($desas as $d)
                           <tr>
-                              <td>{{ ucwords($d->nama) }}</td>
+                              <td>{!! ucwords($d->nama).' '.$d->verified_label !!}</td>
                               <td>{{ $d->kecamatan->nama }}</td>
                               <td>{{ $d->penduduk_total }}</td>
+                              <td>{{ $d->verifier_name }}</td>
                               <td>{!! $d->action_buttons !!}</td>
                           </tr>
                       @endforeach

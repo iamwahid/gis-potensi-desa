@@ -187,6 +187,8 @@ return [
         'frontend' => [
             'email'                     => 'Alamat E-mail',
             'name'                      => 'Nama',
+            'first_name'                      => 'Nama Depan',
+            'last_name'                      => 'Nama Belakang',
             'password'                  => 'Sandi',
             'password_confirmation'     => 'Konfirmasi Sandi',
             'phone' => 'Phone',

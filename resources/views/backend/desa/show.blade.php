@@ -6,14 +6,15 @@
       <div class="row">
           <div class="col-sm-5">
               <h4 class="card-title mb-0">
-                  Desa <small>Lihat</small>
+                  Desa <small>Lihat</small> {!! $desa->verified_label !!}
               </h4>
             
 					</div><!--col-->
 
 					<div class="col-sm-7 pull-right">
             <div class="btn-toolbar float-right" role="toolbar" aria-label="@lang('labels.general.toolbar_btn_groups')">
-                <a href="{{ route('admin.desa.potency.index', $desa) }}" class="btn btn-success ml-1" data-toggle="tooltip" title="Potensi Desa">Lihat Potensi</a>
+                <a href="{{ route('admin.desa.edit', $desa) }}" class="btn btn-primary ml-1" data-toggle="tooltip" title="Edit Desa">Edit</a>
+                <a href="{{ route('admin.desa.potency.index', $desa) }}" class="btn btn-success ml-1" data-toggle="tooltip" title="Potensi Desa">Potensi Desa</a>
             </div><!--btn-toolbar-->            
           </div><!--col-->
       </div><!--row-->

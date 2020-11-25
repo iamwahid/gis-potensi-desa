@@ -38,7 +38,7 @@ return [
             'roles' => [
                 'create'     => 'Buat Peran',
                 'edit'       => 'Edit Peran',
-                'management' => 'Manajemen Peran',
+                'management' => 'Peran',
 
                 'table' => [
                     'number_of_users' => 'Jumlah Pengguna',
@@ -58,7 +58,7 @@ return [
                 'deactivated'         => 'Pengguna Dinonaktifkan',
                 'deleted'             => 'Pengguna Dihapus',
                 'edit'                => 'Edit Pengguna',
-                'management'          => 'Manajemen Pengguna',
+                'management'          => 'Pengguna',
                 'no_permissions'      => 'Tidak Ada Izin',
                 'no_roles'            => 'Tidak Ada Peran untuk Ditetapkan.',
                 'permissions'         => 'Izin',

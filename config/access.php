@@ -48,6 +48,7 @@ return [
         /*
          * The default role all new registered users get added to
          */
+        'verifier_role' => 'verifier',
         'default_role' => 'user',
 
         /*

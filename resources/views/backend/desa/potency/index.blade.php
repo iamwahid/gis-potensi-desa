@@ -26,15 +26,17 @@
                           <th>Nama Potensi</th>
                           <th>Dikelola/Diproduksi Oleh</th>
                           <th>Jenis Potensi</th>
+                          <th>Verifikator</th>
                           <th>@lang('labels.general.actions')</th>
                       </tr>
                       </thead>
                       <tbody>
                       @foreach($potencies as $d)
                           <tr>
-                              <td>{{ ucwords($d->nama) }}</td>
+                              <td>{!! ucwords($d->nama).' '.$d->verified_label !!}</td>
                               <td>{{ ucwords($d->managed_by) }}</td>
                               <td>{{ ucwords($d->potency_type) }}</td>
+                              <td>{{ ucwords($d->verifier_name) }}</td>
                               <td>{!! $d->action_buttons !!}</td>
                           </tr>
                       @endforeach

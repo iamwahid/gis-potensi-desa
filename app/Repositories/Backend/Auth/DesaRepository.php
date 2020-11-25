@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use App\Exceptions\GeneralException;
 use App\Http\Resources\MapResource;
 use App\Repositories\BaseRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 /**
  * Class DesaRepository.
@@ -35,6 +38,18 @@ class DesaRepository extends BaseRepository
         ];
 
         $this->create($data);
+    }
+
+    public function getPaginated(Collection $data, $paged = 50, $cpage = null) : LengthAwarePaginator
+    {
+
+        // creating pagination
+        $items = $data;
+        $cpage = $cpage ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        $result = new LengthAwarePaginator($items->forPage($cpage, $paged), $items->count(), $paged, $cpage, ['path' => route('admin.desa.index')] );
+
+        return $result;
     }
 
     public function getMapDesa()

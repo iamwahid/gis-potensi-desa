@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Desa extends Model
@@ -53,6 +54,8 @@ class Desa extends Model
         'letak_tinggi_kantor_desa',
         'luas_wilayah',
         'luas_persen_kecamatan',
+        'verified',
+        'verified_by',
     ];
 
     protected $appends = [
@@ -66,13 +69,13 @@ class Desa extends Model
 
     public function potencies()
     {
-        return $this->hasMany(Potency::class, 'desa_id');
+        return $this->hasMany(Potency::class, 'desa_id')->orderBy('verified');
     }
 
-    // public function wisatas()
-    // {
-    //     return $this->hasMany(Wisata::class, 'desa_id');
-    // }
+    public function verifier()
+    {
+        return $this->hasOne(User::class, 'id', 'verified_by');
+    }
 
     public function getActionButtonsAttribute()
     {
@@ -80,12 +83,13 @@ class Desa extends Model
         $edit = route('admin.desa.edit', $this->id);
         $delete = route('admin.desa.destroy', $this->id);
         $potency = route('admin.desa.potency.index', $this->id);
+        $unverified = $this->unverified_potency_count;
         $html = 
 <<<HTML
         <div class="btn-group">
         <a href="$show" class="btn btn-success">Lihat</a>
         <a href="$edit" class="btn btn-primary">Edit</a>
-        <a href="$potency" class="btn btn-primary">Potensi Desa</a>
+        <a href="$potency" class="btn btn-primary">Potensi Desa $unverified</a>
         <a href="$delete" class="btn btn-danger" data-method="delete">Hapus</a>
         </div>
 HTML;
@@ -237,6 +241,40 @@ HTML;
             'luas_wilayah',
             'luas_persen_kecamatan',
         ]);
+    }
+
+    public function getVerifiedLabelAttribute()
+    {
+        $verified = $this->verified ? 'verified' : 'unverified';
+        $badge = $this->verified ? 'badge-success' : 'badge-danger';
+        $verify = route('admin.desa.verify', $this->id);
+        $disabled = auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')]) ? '' : 'style="pointer-events: none"';
+        $html = 
+<<<HTML
+        <a class="badge badge-sm $badge" $disabled href="$verify">$verified</a>
+HTML;
+        return $html;
+    }
+
+    public function getUnverifiedsAttribute()
+    {
+        $count = $this->potencies->where('verified', false)->count();
+        return $count;
+    }
+
+    public function getUnverifiedPotencyCountAttribute()
+    {
+        $count = $this->unverifieds;
+        $html = 
+<<<HTML
+        <span class="badge badge-sm badge-danger">$count</span>
+HTML;
+        return $count > 0 ? $html : '';
+    }
+
+    public function getVerifierNameAttribute()
+    {
+        return $this->verifier ? $this->verifier->name : null;
     }
 
     public function scopeNama($query, $nama = '')

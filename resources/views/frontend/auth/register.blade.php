@@ -80,6 +80,19 @@
                             </div><!--col-->
                         </div><!--row-->
 
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    {{ html()->label('Desa yang diampu')->for('desa') }}
+
+                                    {{ html()->select('desa')
+                                        ->class('form-control')
+                                        ->options(['' => 'Pilih'] + $desas)
+                                        ->required() }}
+                                </div><!--form-group-->
+                            </div><!--col-->
+                        </div><!--row-->
+
                         @if(config('access.captcha.registration'))
                             <div class="row">
                                 <div class="col">

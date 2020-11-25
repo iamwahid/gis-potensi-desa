@@ -19,7 +19,7 @@
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link {{ active_class(Active::checkUriPattern('admin/desa/')) }}" href="{{ route('admin.desa.index') }}">
-                            Semua Data Desa
+                            Data Desa
                         </a>
                     </li>
                     {{-- <li class="nav-item">
@@ -30,7 +30,7 @@
                 </ul>
             </li>
 
-            @if (false)
+            @can('edit backend')
             <li class="nav-title">
                 @lang('menus.backend.sidebar.system')
             </li>
@@ -41,7 +41,7 @@
                         <i class="nav-icon icon-user"></i> @lang('menus.backend.access.title')
 
                         @if ($pending_approval > 0)
-                            <span class="badge badge-danger">{{ $pending_approval }}</span>
+                            <span class="badge badge-danger" style="display: inline !important">{{ $pending_approval }}</span>
                         @endif
                     </a>
 
@@ -84,7 +84,7 @@
                     </li>
                 </ul>
             </li>
-            @endif
+            @endcan
         </ul>
     </nav>
 

@@ -6,7 +6,7 @@
       <div class="row">
           <div class="col-sm-5">
               <h4 class="card-title mb-0">
-                  Potensi Desa <small>Lihat</small>
+                  Potensi Desa <small>Lihat</small> {!! $potency->verified_label !!}
               </h4>
             
           </div><!--col-->

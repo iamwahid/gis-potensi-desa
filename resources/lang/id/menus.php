@@ -15,7 +15,7 @@ return [
 
     'backend' => [
         'access' => [
-            'title' => 'Manajemen Akses',
+            'title' => 'Akses',
 
             'roles' => [
                 'all'        => 'Semua Peran',
