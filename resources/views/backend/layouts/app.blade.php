@@ -65,6 +65,7 @@
     <script src="{{asset('js/vendor/leaflet.awesome-markers.js')}}"></script>
     <script src="{{asset('js/vendor/leaflet.draw.js')}}"></script>
     <script src="{{asset('js/map-init.js')}}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/23.1.0/classic/ckeditor.js"></script>
     @stack('after-scripts')
 </body>
 </html>

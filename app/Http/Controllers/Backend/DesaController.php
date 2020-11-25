@@ -216,6 +216,7 @@ class DesaController extends Controller
     public function destroy(Desa $desa)
     {
         // $this->desas->deleteById($desa->id);
+        return redirect()->route('admin.desa.index', $desa)->withFlashWarning('forbidden');
     }
 
     /**
@@ -241,25 +242,41 @@ class DesaController extends Controller
             'nama'  => ['required'],
             'deskripsi' => ['required'],
             'managed_by' => ['nullable'],
-            'potency_type' => ['nullable'],
-            'potency_category' => ['nullable'],
-            'potency_source' => ['nullable'],
+            'potency_type' => ['required'],
+            // 'potency_category' => ['nullable'],
+            // 'potency_source' => ['nullable'],
             'is_draft' => ['nullable'],
             'map_lat' => ['required'],
             'map_long' => ['required'],
             'map_bound_coordinates' => ['nullable'],
             'marker_type' => ['nullable'],
-            'marker_color' => ['nullable']
+            // 'marker_color' => ['nullable']
         ]);
+        $marker_colors = [
+            'ekonomi' => 'red',
+            'alam' => 'green',
+            'buatan' => 'blue',
+            'budaya' => 'orange'
+        ];
+        $data['marker_color'] = $marker_colors[$data['potency_type']];
         $potensi = $desa->potencies()->create($data);
         
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $path = "/desa/$desa->id/potensi/$potensi->id";
-            $name = $data['nama'] . '-' . time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public'.$path, $name);
-            $potensi->update(['image' => $path.'/'.$name]);
+        
+        $gallery = json_decode($potensi->gallery, true) ?? [];
+        foreach (['image', 'gallery1', 'gallery2', 'gallery3'] as $img) {
+            if ($request->hasFile($img)) {
+                $image = $request->file($img);
+                $path = "/desa/$desa->id/potensi/$potensi->id";
+                $name = $data['nama'] . '-' . \Str::random(5) . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public'.$path, $name);
+                if ($img == 'image') {
+                    $potensi->update(['image' => $path.'/'.$name]);
+                } else {
+                    $gallery[$img] = $path.'/'.$name;
+                }
+            }
         }
+        $potensi->update(['gallery' => json_encode($gallery)]);
         return redirect()->route('admin.desa.potency.index', $desa)->withFlashSuccess('success');
     }
 
@@ -278,26 +295,44 @@ class DesaController extends Controller
                 'nama'  => ['required'],
                 'deskripsi' => ['required'],
                 'managed_by' => ['nullable'],
-                'potency_type' => ['nullable'],
-                'potency_category' => ['nullable'],
-                'potency_source' => ['nullable'],
+                'potency_type' => ['required'],
+                // 'potency_category' => ['nullable'],
+                // 'potency_source' => ['nullable'],
                 'is_draft' => ['nullable'],
                 'map_lat' => ['required'],
                 'map_long' => ['required'],
                 'map_bound_coordinates' => ['nullable'],
                 'marker_type' => ['nullable'],
-                'marker_color' => ['nullable']
+                // 'marker_color' => ['nullable']
             ]);
             
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $path = '/desa/'.$potency->desa->id.'/potensi/'.$potency->id;
-                $name = $data['nama'] . '-' . time() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('public'.$path, $name);
-                @Storage::delete('public'.$potency->image);
-                $data['image'] = $path.'/'.$name;
+            $marker_colors = [
+                'ekonomi' => 'red',
+                'alam' => 'green',
+                'buatan' => 'blue',
+                'budaya' => 'orange'
+            ];
+            $data['marker_color'] = $marker_colors[$data['potency_type']];
+
+            $gallery = json_decode($potency->gallery, true) ?? [];
+            foreach (['image', 'gallery1', 'gallery2', 'gallery3'] as $img) {
+                if ($request->hasFile($img)) {
+                    $image = $request->file($img);
+                    $path = '/desa/'.$potency->desa->id.'/potensi/'.$potency->id;
+                    $name = $data['nama'] . '-' . \Str::random(5) . '.' . $image->getClientOriginalExtension();
+                    $image->storeAs('public'.$path, $name);
+                    if ($img == 'image') {
+                        @Storage::delete('public'.$potency->image);
+                        $data['image'] = $path.'/'.$name;
+                    } else {
+                        @Storage::delete('public'.$gallery[$img]);
+                        $gallery[$img] = $path.'/'.$name;
+                    }
+                }
             }
+            $data['gallery'] = json_encode($gallery);
             $potency->update($data);
+
             return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashSuccess('success');
         }
 
@@ -307,5 +342,6 @@ class DesaController extends Controller
     public function potencyDesaDestroy(Potency $potency)
     {
         $this->potencies->deleteById($potency->id);
+        return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashSuccess('success');
     }
 }

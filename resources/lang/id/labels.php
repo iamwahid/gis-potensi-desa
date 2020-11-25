@@ -19,6 +19,7 @@ return [
         'no'      => 'Tidak',
         'custom'  => 'Kustom',
         'actions' => 'Tindakan',
+        'copyright' => 'Copyright',
         'active'  => 'Aktif',
         'buttons' => [
             'save'   => 'Simpan',

@@ -16,6 +16,7 @@ class Potency extends Model
         'potency_source', // alam, buatan
         'is_draft', // masih konsep
         'image',
+        'gallery',
         'map_lat',
         'map_long',
         'map_bound_coordinates',
@@ -54,7 +55,7 @@ class Potency extends Model
 
     public function getPotencyTypeAttribute()
     {
-        if ($this->attributes['potency_type']) return config('gisdesa.value.desa.potency.potency_type')[$this->attributes['potency_type']];
+        if ($this->attributes['potency_type']) return config('gisdesa.value.desa.potency.potency_type')[$this->attributes['potency_type']] ?? $this->attributes['potency_type'];
     }
 
     public function getActionButtonsAttribute()
@@ -71,6 +72,11 @@ class Potency extends Model
         </div>
 HTML;
         return $html;
+    }
+
+    public function getGalleriesAttribute()
+    {
+        return json_decode($this->gallery);
     }
 
     public function scopeKeyword($query, $keyword = '')

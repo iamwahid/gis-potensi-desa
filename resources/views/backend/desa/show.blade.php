@@ -87,7 +87,9 @@
 
 @push('after-scripts')
 <script>
-// base map    
+// base map  
+KecLabel = false;
+  
 loadMapArea('{{ route("api.map.desa.id", $desa->id) }}', function(){
 	map.fitBounds(geojson.getBounds())
 }, true, true)

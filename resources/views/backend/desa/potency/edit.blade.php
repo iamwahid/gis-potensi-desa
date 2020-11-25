@@ -25,9 +25,19 @@
             <label for="nama">Nama Potensi Desa</label>
             {{ html()->text('nama')->class('form-control')->required() }}
         </div>
+    </div>
+    <div class="row mt-3">
         <div class="col">
-            <label for="img">Gambar</label>  <small>(Pilih gambar jika memperbarui)</small>
+            <label for="img">Gambar Utama</label>  <small>(Pilih gambar jika memperbarui)</small>
             {{ html()->file('image')->class('d-block')->accept('.jpg,.png,.jpeg') }}
+        </div>
+        <div class="col">
+            <label for="img">Gallery</label>  <small>(Pilih gambar jika memperbarui)</small>
+            <div class="d-flex">
+                {{ html()->file('gallery1')->class('d-block')->accept('.jpg,.png,.jpeg') }}
+                {{ html()->file('gallery2')->class('d-block')->accept('.jpg,.png,.jpeg') }}
+                {{ html()->file('gallery3')->class('d-block')->accept('.jpg,.png,.jpeg') }}
+            </div>
         </div>
     </div>
     <div class="row mt-2">
@@ -43,7 +53,7 @@
         </div>
     </div>
 
-    <div class="row mt-2">
+    {{-- <div class="row mt-2">
         <div class="col">
               <label for="potency_category">Kategori Potensi</label>
               {{ html()->select('potency_category')
@@ -54,14 +64,14 @@
               {{ html()->select('potency_source')
               ->options(config('gisdesa.value.desa.potency.potency_source'))->class('form-control')->required() }}
         </div>
-    </div>
+    </div> --}}
 
     <div class="row mt-2">
-        <div class="col">
+        {{-- <div class="col">
             <label for="marker_color">Marker</label>
             {{ html()->select('marker_color')
             ->options($markers)->class('form-control')->required() }}
-        </div>
+        </div> --}}
         <div class="col">
               <label for="map_lat">Latitude</label>
               {{ html()->text('map_lat')
@@ -94,6 +104,7 @@
 
 @push('after-scripts')
 <script>    
+KecLabel = false;
 // base map
 loadMapArea('{{ route("api.map.desa.id", $potency->desa->id) }}', function(){
     map.fitBounds(geojson.getBounds())
@@ -103,7 +114,11 @@ loadMapArea('{{ route("api.map.desa.id", $potency->desa->id) }}', function(){
 }, true, true);
 
 loadMapMarker('{{ route("api.map.potency.id", $potency->id) }}');
-
+ClassicEditor
+    .create( document.querySelector( '#deskripsi' ) )
+    .catch( error => {
+        console.error( error );
+    } );
 </script>
 
 <script>

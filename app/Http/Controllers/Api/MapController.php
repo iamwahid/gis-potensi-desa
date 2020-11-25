@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Backend\Auth\DesaRepository;
+use App\Repositories\Backend\Auth\KecamatanRepository;
 use App\Repositories\Backend\Auth\PotencyRepository;
 use Request;
 
@@ -15,11 +16,13 @@ class MapController extends Controller
 
     protected $desas;
     protected $potencies;
+    protected $kecamatans;
 
-    public function __construct(DesaRepository $desas, PotencyRepository $potencies)
+    public function __construct(DesaRepository $desas, PotencyRepository $potencies, KecamatanRepository $kecamatans)
     {
         $this->desas = $desas;
         $this->potencies = $potencies;
+        $this->kecamatans = $kecamatans;
     }
 
     public function mapDesa()
@@ -50,6 +53,19 @@ class MapController extends Controller
     public function mapPotencyByDesaId($id)
     {
         return $this->potencies->getMapByDesaId($id);
+    }
+
+    public function mapPotencyByKecId($id)
+    {
+        return $this->potencies->getMapByKecId($id);
+    }
+
+    public function getKecLatLng()
+    {
+        return $this->kecamatans->get(['id', 'nama', 'map_lat', 'map_long'])->map(function($d){
+            $d->nama = strtoupper($d->nama);
+            return $d;
+        });
     }
 
     public function mapSearch()

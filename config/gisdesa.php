@@ -9,16 +9,19 @@ return [
           'industri_rumah' => 'Industri Rumahan',
           'koperasi' => 'Koperasi',
           'kelompok_usaha' => 'Kelompok Usaha',
+          'kelompok_masyarakat' => 'Kelompok Masyarakat',
           'perorangan' => 'Perorangan',
           'dinas' => 'Dinas'
         ],
         'potency_type' => [
-          'produk' => 'Produk',
-          'wisata' => 'Wisata'
+          'ekonomi' => 'Ekonomi',
+          'alam' => 'Alam',
+          'buatan' => 'Buatan',
+          'budaya' => 'Budaya',
         ],
         'potency_category' => [
           //Wisata
-          'Wisata' => [
+          'Alam' => [
             'pemandangan' => 'Pemandangan Alam',
             'buper' => 'Bumi Perkemahan',
             'telaga' => 'Telaga',
@@ -26,11 +29,21 @@ return [
             'rest_area' => 'Rest Area',
           ],
           //Produk
-          'Produk' => [
+          'Ekonomi' => [
             'makanan' => 'Makanan',
             'minuman' => 'Minuman',
             'kerajinan' => 'Kerajinan',
-          ]
+          ],
+          'Buatan' => [
+            'makanan' => 'Makanan',
+            'minuman' => 'Minuman',
+            'kerajinan' => 'Kerajinan',
+          ],
+          'Budaya' => [
+            'makanan' => 'Makanan',
+            'minuman' => 'Minuman',
+            'kerajinan' => 'Kerajinan',
+          ],
         ],
         'potency_source' => [
           'alam' => 'Hasil Alam',

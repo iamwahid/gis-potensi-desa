@@ -36,6 +36,8 @@ var goldIcon = new L.Icon({
 });
 
 var zoomto = 'kec';
+var labelLocs = [];
+var KecLabel = true;
 var info = L.control();
 
 info.onAdd = function (map) {
@@ -56,6 +58,44 @@ info.update = function (props) {
 };
 
 info.addTo(map);
+
+L.LabelOverlay = L.Layer.extend({
+  initialize: function(/*LatLng*/ latLng, /*String*/ label, options) {
+      this._latlng = latLng;
+      this._label = label;
+      L.Util.setOptions(this, options);
+  },
+  options: {
+      offset: new L.Point(0, 2)
+  },
+  onAdd: function(map) {
+      this._map = map;
+      if (!this._container) {
+          this._initLayout();
+      }
+      map.getPanes().popupPane.appendChild(this._container);
+      this._container.innerHTML = this._label;
+      map.on('movestart', this._update_start, this);
+      map.on('moveend', this._update_end, this);
+      this._update_end();
+  },
+  onRemove: function(map) {
+      map.getPanes().popupPane.removeChild(this._container);
+      map.off('movestart', this._update_start, this);
+      map.off('moveend', this._update_end, this);
+  },
+  _update_start: function(){
+      L.DomUtil.setPosition(this._container, 0);
+  },
+  _update_end: function() {
+      var pos = this._map.latLngToLayerPoint(this._latlng);
+      var op = new L.Point(pos.x + this.options.offset.x, pos.y - this.options.offset.y);
+      L.DomUtil.setPosition(this._container, op);
+  },
+  _initLayout: function() {
+      this._container = L.DomUtil.create('div', 'leaflet-label-overlay');
+  }
+});
 
 function highlightFeature(e) {
     var layer = e.target;
@@ -84,7 +124,8 @@ function zoomToFeature(e) {
         map.removeLayer(map_p_markers)
         zoomto = 'desa'
         loadMapArea(baseUrl+'/api/map/kec/'+e.target.feature.properties.kec_id, function(){
-            map.fitBounds(geojson.getBounds())
+            map.fitBounds(geojson.getBounds());
+            loadMapMarker(baseUrl+'/api/map/kec/'+e.target.feature.properties.kec_id+'/potency')
         }, false, false)
     } else {
         map.fitBounds(e.target.getBounds());
@@ -204,14 +245,40 @@ function loadMapArea(url, callback, disableEachFeature, disablePopup) {
                 })
             }
             
-			geojson.addTo(map);
-
+            geojson.addTo(map);
+            if (KecLabel) {
+                axios.get(baseUrl+'/api/map/kec')
+                    .then(function (response) {
+                    let kecs = response.data;
+                    labelLocs = [];
+                    for (let i = 0; i < kecs.length; i++) {
+                        const element = kecs[i];
+                        let lloc = new L.LabelOverlay(new L.LatLng(element.map_lat, element.map_long), '<b>'+element.nama+'</b>');
+                        labelLocs.push(lloc);
+                        map.addLayer(lloc);
+                    }
+                })
+            }
 			callback()
 		})
 		.catch(function (error) {
 			console.log(error);
 		});
 }
+
+map.on('movestart', function () {
+  for (let i = 0; i < labelLocs.length; i++) {
+    const element = labelLocs[i];
+    map.removeLayer(element);
+  }
+});
+
+map.on('moveend', function () {
+  for (let i = 0; i < labelLocs.length; i++) {
+    const element = labelLocs[i];
+    map.addLayer(element);
+  }
+});
 
 function loadMapMarker(url, params, callback) {
 	params = params || {};

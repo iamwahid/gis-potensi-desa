@@ -21,9 +21,10 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'map', 'as' => 'api.map.'], function () {
     Route::get('/desa', [MapController::class, 'mapDesa'])->name('desa');
     Route::get('/desa/{id}', [MapController::class, 'mapDesaById'])->name('desa.id');
+    Route::get('/kec', [MapController::class, 'getKecLatLng'])->name('kec.index');
     Route::get('/kec/{id}', [MapController::class, 'mapDesaByKecId'])->name('kec.id');
+    Route::get('/kec/{id}/potency', [MapController::class, 'mapPotencyByKecId'])->name('kec.potency');
     Route::get('/desa/{id}/potency', [MapController::class, 'mapPotencyByDesaId'])->name('desa.potency');
-    Route::get('/desa/{id}/wisata', [MapController::class, 'mapWisataByDesaId'])->name('desa.wisata');
     Route::get('/potency', [MapController::class, 'mapPotency'])->name('potency');
     Route::get('/potency/search', [MapController::class, 'mapSearch'])->name('potency.search');
     Route::get('/potency/{id}', [MapController::class, 'mapPotencyById'])->name('potency.id');

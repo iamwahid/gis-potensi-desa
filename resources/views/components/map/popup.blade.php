@@ -4,7 +4,7 @@
   </div>
   <div class="p-1">
     @foreach ($props as $p)
-    <div class="d-block">{{$p}}</div>
+    <div class="d-block">{!!$p!!}</div>
     @endforeach
   </div>
 </div>

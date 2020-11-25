@@ -95,6 +95,30 @@ class PotencyRepository extends BaseRepository
         ]);
     }
 
+    public function getMapByKecId($id)
+    {
+        $features = $this->whereHas('desa', function($q) use ($id){
+            return $q->where('kec_id', $id);
+        })->get()->map(function($potency) {
+            return [
+                'type'       => 'Feature',
+                'properties' => new MapResource($potency),
+                'geometry'   => [
+                    'type'        => 'Point',
+                    'coordinates' => [
+                        $potency->map_long,
+                        $potency->map_lat,
+                    ],
+                ],
+            ];
+        });
+
+        return json_encode([
+            'type' =>  'FeatureCollection',
+            'features' => $features
+        ]);
+    }
+
     public function searchBy($search)
     {
         extract($search);
@@ -105,6 +129,14 @@ class PotencyRepository extends BaseRepository
         ->category($category ?? null)
         ->keyword($keyword ?? '')
         ->get();
+    }
+
+    public function deleteById($id) : bool
+    {
+        $this->unsetClauses();
+        $potency = $this->getById($id);
+        @\Storage::deleteDirectory('public'.dirname($potency->image));
+        return $potency->delete();
     }
 
 }
