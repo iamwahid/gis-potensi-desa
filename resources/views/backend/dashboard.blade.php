@@ -67,6 +67,7 @@ $('#button-reset').click(function(e){
     e.preventDefault()
     $('#kec_desa_id').val('')
     $('#potensi').val('')
+    $('#keyword').val('')
 	resetMap()
 })
 
