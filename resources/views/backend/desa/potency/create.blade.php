@@ -88,7 +88,7 @@
         <div class="col">
             <label for="deskripsi">Deskripsi</label>
             {{ html()->textarea('deskripsi')->attribute('rows', 6)
-            ->class('form-control')->required() }}
+            ->class('form-control') }}
         </div>
     </div>
 

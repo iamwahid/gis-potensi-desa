@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
     <a class="navbar-brand" href="#">
-        <img class="navbar-brand-full" src="{{ asset('img/backend/brand/logo.png') }}" width="89" height="40" alt="IP Logo">
+        <img class="navbar-brand-full" src="{{ asset('img/backend/brand/logo.png') }}" width="125" height="50" alt="IP Logo">
     </a>
-    <a href="{{ route('frontend.index') }}" class="navbar-brand">{{ app_name() }}</a>
+    {{-- <a href="{{ route('frontend.index') }}" class="navbar-brand">{{ app_name() }}</a> --}}
 
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="@lang('labels.general.toggle_navigation')">
         <span class="navbar-toggler-icon"></span>

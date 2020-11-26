@@ -172,6 +172,8 @@ return [
             'penduduk_sector_trade' => 'Bidang Perdagangan',
             'penduduk_sector_service' => 'Bidang Jasa',
             'penduduk_sector_transportation' => 'Bidang Transportasi',
+            'penduduk_sector_tni_polri' => 'TNI/Polri',
+            'penduduk_sector_asn' => 'Aparatur Sipil Negara',
             'penduduk_edu_none' => 'Jumlah tidak Sekolah',
             'penduduk_edu_sd' => 'Jumlah Lulusan SD',
             'penduduk_edu_smp' => 'Jumlah Lulusan SMP Sederajat',

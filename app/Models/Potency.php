@@ -44,9 +44,10 @@ class Potency extends Model
     public function getMapcontentAttribute()
     {
         $props = [
-            'Nama Potensi : '. $this->nama,
-            'Deskripsi Potensi : '.$this->deskripsi,
-            'Koordinat : '.$this->map_lat.', '.$this->map_long,
+            'Nama Potensi' =>  $this->nama,
+            'Jenis Potensi' => $this->potency_type,
+            'Dikelola Oleh' => $this->managed_by,
+            // 'Koordinat' => $this->map_lat.', '.$this->map_long,
         ];
         $image = $this->image ? asset('storage'.$this->image) : null;
         $links = [

@@ -58,8 +58,8 @@ class DesaController extends Controller
             }));
         } else {
             if (auth()->user()->desa) {
-                return redirect()->route('admin.desa.show', auth()->user()->desa->id);
-            } else return redirect()->route('admin.dashboard')->withFlashWarning('Tidak Memiliki Desa');
+                return redirect()->route('admin.desa.show', auth()->user()->desa->id)->withFlashDanger(session()->get('flash_danger') ?? '');
+            } else return redirect()->route('admin.dashboard')->withFlashDanger('Tidak Memiliki Desa');
         }
        
 
@@ -102,6 +102,8 @@ class DesaController extends Controller
             'penduduk_sector_trade' => 'nullable',
             'penduduk_sector_service' => 'nullable',
             'penduduk_sector_transportation' => 'nullable',
+            'penduduk_sector_tni_polri' => 'nullable',
+            'penduduk_sector_asn' => 'nullable',
             'penduduk_edu_none' => 'nullable',
             'penduduk_edu_sd' => 'nullable',
             'penduduk_edu_smp' => 'nullable',
@@ -154,6 +156,9 @@ class DesaController extends Controller
      */
     public function edit(Desa $desa)
     {
+        if ($desa->verified && !auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
+            return redirect()->route('admin.desa.index')->withFlashDanger('Tidak memiliki izin');
+        }
         $kecamatans = $this->kecamatans->get()->pluck('nama', 'id')->toArray();
         return view('backend.desa.edit', compact(['desa', 'kecamatans']));
     }
@@ -168,6 +173,9 @@ class DesaController extends Controller
      */
     public function update(Request $request, Desa $desa)
     {
+        if ($desa->verified && !auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
+            return redirect()->route('admin.desa.index')->withFlashDanger('Tidak memiliki izin');
+        }
         $data = $request->validate([
             'nama' => 'required',
             'penduduk_total' => 'nullable',
@@ -184,6 +192,8 @@ class DesaController extends Controller
             'penduduk_sector_trade' => 'nullable',
             'penduduk_sector_service' => 'nullable',
             'penduduk_sector_transportation' => 'nullable',
+            'penduduk_sector_tni_polri' => 'nullable',
+            'penduduk_sector_asn' => 'nullable',
             'penduduk_edu_none' => 'nullable',
             'penduduk_edu_sd' => 'nullable',
             'penduduk_edu_smp' => 'nullable',
@@ -297,6 +307,9 @@ class DesaController extends Controller
 
     public function potencyDesaEdit(Request $request, Potency $potency)
     {
+        if ($potency->verified && !auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
+            return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashDanger('Tidak memiliki izin');
+        }
         $markers = collect(config('gisdesa.value.desa.marker.available'))->mapWithKeys(function($d, $i){
             return [$i => ucfirst($i)];
         })->toArray();
@@ -351,8 +364,11 @@ class DesaController extends Controller
 
     public function potencyDesaDestroy(Potency $potency)
     {
+        if ($potency->verified && !auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
+            return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashDanger('Tidak memiliki izin');
+        }
         $this->potencies->deleteById($potency->id);
-        return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashSuccess('success');
+        return redirect()->route('admin.desa.potency.index', $potency->desa)->withFlashDanger('Potensi dihapus');
     }
 
     public function potencyDesaVerify(Potency $potency)
@@ -362,7 +378,7 @@ class DesaController extends Controller
             $potency->verified_by = auth()->id();
             $potency->save();
         }
-        return redirect()->route('admin.desa.potency.index', $potency->desa->id)->withFlashSuccess('success');
+        return redirect()->route('admin.desa.potency.index', $potency->desa->id)->withFlashSuccess('Terverifikasi');
     }
 
     public function verify(Desa $desa)
@@ -372,6 +388,6 @@ class DesaController extends Controller
             $desa->verified_by = auth()->id();
             $desa->save();
         }
-        return redirect()->route('admin.desa.index')->withFlashSuccess('success');
+        return redirect()->route('admin.desa.index')->withFlashSuccess('Terverifikasi');
     }
 }

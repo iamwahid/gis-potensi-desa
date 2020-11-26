@@ -20,6 +20,8 @@
                         <div class="col text-center">
                             @if ($potency->image)
                             <img src="{{asset('storage'.$potency->image)}}" alt="" class="img-fluid" style="max-height: 200px">
+                            @else
+                            <img src="http://placehold.it/100x100?text=image" alt="img-fluid" style="max-height: 200px">
                             @endif
                         </div>
                     </div>
@@ -69,11 +71,16 @@
                       <td>{{$potency->managed_by}}</td>
                   </tr>
               </table>
-              <hr>
-              <p>{!!$potency->deskripsi!!}</p>
+              
           </div>
           <div class="col-9">
               <div id="mapid" style="min-height: 500px"></div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col text-justify">
+            <hr>
+            <p>{!!$potency->deskripsi!!}</p>
           </div>
       </div>
   </div><!--card-body-->

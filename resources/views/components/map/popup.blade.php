@@ -3,9 +3,15 @@
     <img src="{{ $image ?: 'http://placehold.it/100x100?text=image'}}" alt="" style="max-width: 100px; max-height:100px">
   </div>
   <div class="p-1">
-    @foreach ($props as $p)
-    <div class="d-block">{!!$p!!}</div>
-    @endforeach
+    <table>
+      @foreach ($props as $k => $p)
+      <tr>
+        <td><strong>{{$k}}</strong></td>
+        <td>:</td>
+        <td>{!!$p!!}</td>
+      </tr>
+      @endforeach
+    </table>
   </div>
 </div>
 <div class="d-flex flex-column">

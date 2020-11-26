@@ -51,32 +51,32 @@
                 </div>
                 <div class="tab-pane fade" id="p-jumlah-penduduk" role="tabpanel" aria-labelledby="p-jumlah-penduduk-list">
                     @foreach ($desa->jumlah_penduduk as $k => $attr)
-                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} </div>
+                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} Orang </div>
                     @endforeach
                 </div>
                 <div class="tab-pane fade " id="p-pekerjaan-penduduk" role="tabpanel" aria-labelledby="p-pekerjaan-penduduk-list">
                     @foreach ($desa->pekerjaan_penduduk as $k => $attr)
-                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} </div>
+                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} Orang </div>
                     @endforeach
                 </div>
                 <div class="tab-pane fade " id="p-agama-penduduk" role="tabpanel" aria-labelledby="p-agama-penduduk-list">
                     @foreach ($desa->agama_penduduk as $k => $attr)
-                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} </div>
+                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} Orang </div>
                     @endforeach
                 </div>
                 <div class="tab-pane fade " id="p-pendidikan-penduduk" role="tabpanel" aria-labelledby="p-pendidikan-penduduk-list">
                     @foreach ($desa->pendidikan_penduduk as $k => $attr)
-                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} </div>
+                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} Orang </div>
                     @endforeach
                 </div>
                 <div class="tab-pane fade " id="p-dis-penduduk" role="tabpanel" aria-labelledby="p-dis-penduduk-list">
                     @foreach ($desa->dis_penduduk as $k => $attr)
-                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} </div>
+                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} Orang </div>
                     @endforeach
                 </div>
                 <div class="tab-pane fade " id="p-rts-penduduk" role="tabpanel" aria-labelledby="p-rts-penduduk-list">
                     @foreach ($desa->rts_penduduk as $k => $attr)
-                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} </div>
+                        <div>{{ __('labels.desa.table.'.$k).' : '.$attr }} Rumah Tangga </div>
                     @endforeach
                 </div>
             </div>

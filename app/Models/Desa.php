@@ -27,6 +27,8 @@ class Desa extends Model
         'penduduk_sector_trade',
         'penduduk_sector_service',
         'penduduk_sector_transportation',
+        'penduduk_sector_tni_polri',
+        'penduduk_sector_asn',
         'penduduk_edu_none',
         'penduduk_edu_sd',
         'penduduk_edu_smp',
@@ -98,10 +100,10 @@ HTML;
     public function getMapcontentAttribute()
     {   
         $props = [
-            'Desa/Kelurahan : '. $this->nama,
-            'Kecamatan : '.$this->kecamatan->nama,
-            'Kabupaten : '.$this->kecamatan->kabupaten,
-            'Jumlah Total Penduduk : '.$this->penduduk_total.' Jiwa',
+            'Desa/Kelurahan' =>  $this->nama,
+            'Kecamatan' => $this->kecamatan->nama,
+            'Kabupaten' => $this->kecamatan->kabupaten,
+            'Jumlah Total Penduduk' => $this->penduduk_total.' Jiwa',
         ];
         $links = [
             route('admin.desa.show', $this->id) => 'Lihat Detail',
@@ -183,6 +185,8 @@ HTML;
             'penduduk_sector_trade',
             'penduduk_sector_service',
             'penduduk_sector_transportation',
+            'penduduk_sector_tni_polri',
+            'penduduk_sector_asn',
         ]);
     }
 
