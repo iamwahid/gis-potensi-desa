@@ -94,7 +94,7 @@ class RegisterController extends Controller
             return redirect(route('frontend.auth.login'))->withFlashSuccess(
                 config('access.users.requires_approval') ?
                     // __('exceptions.frontend.auth.confirmation.created_pending') :
-                    "Your account was successfully created and is pending approval. Please contact Admin to activate" :
+                    "Registrasi berhasil. Hubungi admin untuk mengaktifkan akun" :
                     __('exceptions.frontend.auth.confirmation.created_confirm')
             );
         }

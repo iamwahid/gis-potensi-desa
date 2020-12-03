@@ -284,8 +284,10 @@ class DesaController extends Controller
         
         $gallery = json_decode($potensi->gallery, true) ?? [];
         foreach (['image', 'gallery1', 'gallery2', 'gallery3'] as $img) {
-            if ($request->file($img)) {
-                $image = $request->file($img);
+            if ($image = $request->file($img)) {
+                if ($image->getSize() > 5242880) {
+                    return redirect()->back()->withFlashWarning("Ukuran File maksimal 5MB");
+                }
                 $path = "/desa/$desa->id/potensi/$potensi->id";
                 $name = 'image-' . \Str::random(10) . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('public'.$path, $name);
@@ -339,8 +341,10 @@ class DesaController extends Controller
 
             $gallery = json_decode($potency->gallery, true) ?? [];
             foreach (['image', 'gallery1', 'gallery2', 'gallery3'] as $img) {
-                if ($request->file($img)) {
-                    $image = $request->file($img);
+                if ($image = $request->file($img)) {
+                    if ($image->getSize() > 5242880) {
+                        return redirect()->back()->withFlashWarning("Ukuran File maksimal 5MB");
+                    }
                     $path = '/desa/'.$potency->desa->id.'/potensi/'.$potency->id;
                     $name = 'image-' . \Str::random(10) . '.' . $image->getClientOriginalExtension();
                     $image->storeAs('public'.$path, $name);
