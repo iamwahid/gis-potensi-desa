@@ -284,7 +284,7 @@ class DesaController extends Controller
         
         $gallery = json_decode($potensi->gallery, true) ?? [];
         foreach (['image', 'gallery1', 'gallery2', 'gallery3'] as $img) {
-            if ($request->hasFile($img)) {
+            if ($request->file($img)) {
                 $image = $request->file($img);
                 $path = "/desa/$desa->id/potensi/$potensi->id";
                 $name = $data['nama'] . '-' . \Str::random(5) . '.' . $image->getClientOriginalExtension();
@@ -339,16 +339,20 @@ class DesaController extends Controller
 
             $gallery = json_decode($potency->gallery, true) ?? [];
             foreach (['image', 'gallery1', 'gallery2', 'gallery3'] as $img) {
-                if ($request->hasFile($img)) {
+                if ($request->file($img)) {
                     $image = $request->file($img);
                     $path = '/desa/'.$potency->desa->id.'/potensi/'.$potency->id;
                     $name = $data['nama'] . '-' . \Str::random(5) . '.' . $image->getClientOriginalExtension();
                     $image->storeAs('public'.$path, $name);
                     if ($img == 'image') {
-                        @Storage::delete('public'.$potency->image);
+                        if (Storage::exists('public'.$potency->image)) {
+                            @Storage::delete('public'.$potency->image);
+                        }
                         $data['image'] = $path.'/'.$name;
                     } else {
-                        @Storage::delete('public'.$gallery[$img]);
+                        if (isset($gallery[$img]) && Storage::exists('public'.$gallery[$img])) {
+                            @Storage::delete('public'.$gallery[$img]);
+                        }
                         $gallery[$img] = $path.'/'.$name;
                     }
                 }
