@@ -287,7 +287,7 @@ class DesaController extends Controller
             if ($request->file($img)) {
                 $image = $request->file($img);
                 $path = "/desa/$desa->id/potensi/$potensi->id";
-                $name = $data['nama'] . '-' . \Str::random(5) . '.' . $image->getClientOriginalExtension();
+                $name = 'image-' . \Str::random(10) . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('public'.$path, $name);
                 if ($img == 'image') {
                     $potensi->update(['image' => $path.'/'.$name]);
@@ -342,7 +342,7 @@ class DesaController extends Controller
                 if ($request->file($img)) {
                     $image = $request->file($img);
                     $path = '/desa/'.$potency->desa->id.'/potensi/'.$potency->id;
-                    $name = $data['nama'] . '-' . \Str::random(5) . '.' . $image->getClientOriginalExtension();
+                    $name = 'image-' . \Str::random(10) . '.' . $image->getClientOriginalExtension();
                     $image->storeAs('public'.$path, $name);
                     if ($img == 'image') {
                         if (Storage::exists('public'.$potency->image)) {
