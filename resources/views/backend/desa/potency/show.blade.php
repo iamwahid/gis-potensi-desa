@@ -27,21 +27,21 @@
                     </div>
                     <hr>
                     <div class="row">
+                        @if ($potency->galleries && isset($potency->galleries['gallery1']))
                         <div class="col">
-                            @if ($potency->galleries && $potency->galleries->gallery1)
-                            <button type="button" class="btn p-0" data-toggle="modal" data-target="#img-modal"><img src="{{asset('storage'.$potency->galleries->gallery1)}}" alt="" class="img-fluid"></button>
-                            @endif
+                            <button type="button" class="btn p-0" data-toggle="modal" data-target="#img-modal"><img src="{{asset('storage'.$potency->galleries['gallery1'])}}" alt="" class="img-fluid"></button>
                         </div>
+                        @endif
+                        @if ($potency->galleries && isset($potency->galleries['gallery2']))
                         <div class="col px-0">
-                            @if ($potency->galleries && $potency->galleries->gallery2)
-                            <button type="button" class="btn p-0" data-toggle="modal" data-target="#img-modal"><img src="{{asset('storage'.$potency->galleries->gallery2)}}" alt="" class="img-fluid"></button>
-                            @endif
+                            <button type="button" class="btn p-0" data-toggle="modal" data-target="#img-modal"><img src="{{asset('storage'.$potency->galleries['gallery2'])}}" alt="" class="img-fluid"></button>
                         </div>
+                        @endif
+                        @if ($potency->galleries && isset($potency->galleries['gallery3']))
                         <div class="col">
-                            @if ($potency->galleries && $potency->galleries->gallery3)
-                            <button type="button" class="btn p-0" data-toggle="modal" data-target="#img-modal"><img src="{{asset('storage'.$potency->galleries->gallery3)}}" alt="" class="img-fluid"></button>
-                            @endif
+                            <button type="button" class="btn p-0" data-toggle="modal" data-target="#img-modal"><img src="{{asset('storage'.$potency->galleries['gallery3'])}}" alt="" class="img-fluid"></button>
                         </div>
+                        @endif
                     </div>
                     <div id="img-modal" class="modal fade" tabindex="-1" role="dialog">
                         <div class="modal-dialog">

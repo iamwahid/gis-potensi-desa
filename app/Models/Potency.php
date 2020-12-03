@@ -103,7 +103,7 @@ HTML;
 
     public function getGalleriesAttribute()
     {
-        return json_decode($this->gallery);
+        return json_decode($this->gallery, true);
     }
 
     public function scopeKeyword($query, $keyword = '')
