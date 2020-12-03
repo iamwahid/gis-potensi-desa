@@ -91,9 +91,10 @@ class RegisterController extends Controller
         if (config('access.users.confirm_email') || config('access.users.requires_approval')) {
             event(new UserRegistered($user));
 
-            return redirect($this->redirectPath())->withFlashSuccess(
+            return redirect(route('frontend.auth.login'))->withFlashSuccess(
                 config('access.users.requires_approval') ?
-                    __('exceptions.frontend.auth.confirmation.created_pending') :
+                    // __('exceptions.frontend.auth.confirmation.created_pending') :
+                    "Your account was successfully created and is pending approval. Please contact Admin to activate" :
                     __('exceptions.frontend.auth.confirmation.created_confirm')
             );
         }
