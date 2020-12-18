@@ -381,21 +381,25 @@ class DesaController extends Controller
 
     public function potencyDesaVerify(Potency $potency)
     {
+        $msg = '';
         if (auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
-            $potency->verified = true;
+            $potency->verified = !$potency->verified;
             $potency->verified_by = auth()->id();
             $potency->save();
+            if ($potency->verified) $msg = 'Terverifikasi';
         }
-        return redirect()->route('admin.desa.potency.index', $potency->desa->id)->withFlashSuccess('Terverifikasi');
+        return redirect()->route('admin.desa.potency.index', $potency->desa->id)->withFlashSuccess($msg);
     }
 
     public function verify(Desa $desa)
     {
+        $msg = '';
         if (auth()->user()->hasRole([config('access.users.verifier_role'), config('access.users.admin_role')])) {
-            $desa->verified = true;
+            $desa->verified = !$desa->verified;
             $desa->verified_by = auth()->id();
             $desa->save();
+            if ($desa->verified) $msg = 'Terverifikasi';
         }
-        return redirect()->route('admin.desa.index')->withFlashSuccess('Terverifikasi');
+        return redirect()->route('admin.desa.index')->withFlashSuccess($msg);
     }
 }
